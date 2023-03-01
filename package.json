@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "jest --watch",
+    "ci:test":"jest",
     "cypress": "cypress open"
   },
   "dependencies": {
