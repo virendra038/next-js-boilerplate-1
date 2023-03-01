@@ -36,5 +36,8 @@
     "jest": "28.1.0",
     "jest-environment-jsdom": "28.1.0",
     "typescript": "4.9.5"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
