@@ -5,6 +5,5 @@ import '@/styles/global.css'
 describe('Home', () => {
   it('renders a heading', () => {
     render(<Home />)
-
   })
 })
