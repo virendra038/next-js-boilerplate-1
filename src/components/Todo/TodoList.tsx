@@ -21,23 +21,29 @@ export default function TodoList({ todos }: TodosProps) {
     <TableContainer>
       <Table variant="simple">
         <Tbody>
-          {todos.map((todo, index) => {
-            return (
-              <Tr key={index}>
-                <Td>
-                  <Stack direction={"row"} justifyContent="space-between">
-                    <Editable defaultValue={todo}>
-                      <EditablePreview />
-                      <EditableInput />
-                    </Editable>
-                    <Checkbox
-                    /*onClick={mark the todo done and send req on backend}*/
-                    />
-                  </Stack>
-                </Td>
-              </Tr>
-            );
-          })}
+          {todos.length > 0 ? (
+            todos.map((todo, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>
+                    <Stack direction={"row"} justifyContent="space-between">
+                      <Editable defaultValue={todo}>
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                      <Checkbox
+                      /*onClick={mark the todo done and send req on backend}*/
+                      />
+                    </Stack>
+                  </Td>
+                </Tr>
+              );
+            })
+          ) : (
+            <Tr>
+              <Td> No Tasks found</Td>
+            </Tr>
+          )}
         </Tbody>
       </Table>
     </TableContainer>
