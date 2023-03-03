@@ -21,7 +21,7 @@ export default function TodoList({ todos }: TodosProps) {
     <TableContainer>
       <Table variant="simple">
         <Tbody>
-          {todos ? (
+          {todos.length > 0 ? (
             todos.map((todo, index) => {
               return (
                 <Tr key={index}>
