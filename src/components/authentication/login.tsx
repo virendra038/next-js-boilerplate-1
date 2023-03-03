@@ -1,6 +1,6 @@
-
 import React from 'react'
 import { useState } from "react";
+import SignInWithGoogle from '../buttons/signInWithGoogle'
 import {
     Flex,
     Heading,
@@ -62,7 +62,7 @@ function login() {
                             >
                                 <Heading> Todo App </Heading>
                                 <Text>Remember Everything important</Text>
-                                
+                                <SignInWithGoogle/>
                                 <Flex alignItems="center" my={4}>
                                     <Divider flex={1} borderColor="#cbd5e0" />
                                     <Text mx={4} fontWeight="bold" color="gray.500">
