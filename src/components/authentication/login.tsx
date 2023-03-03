@@ -12,14 +12,13 @@ import {
     chakra,
     Box,
     Link,
-    Icon,
     Text,
     Divider,
     FormControl,
     FormHelperText,
     InputRightElement
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock, FaGoogle } from "react-icons/fa";
+import { FaUserAlt, FaLock } from "react-icons/fa";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
