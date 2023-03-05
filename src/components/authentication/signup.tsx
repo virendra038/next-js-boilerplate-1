@@ -96,9 +96,7 @@ function login({setIsLogin}) {
                                         </Button>
                                     </InputRightElement>
                                 </InputGroup>
-                                <FormHelperText textAlign="right">
-                                    <Link>forgot password?</Link>
-                                </FormHelperText>
+                                
                             </FormControl>
                             <Button
                                 borderRadius={0}
@@ -107,16 +105,16 @@ function login({setIsLogin}) {
                                 colorScheme="green"
                                 width="full"
                             >
-                                Login
+                                Continue
                             </Button>
                         </Stack>
                     </form>
                 </Box>
             </Stack>
             <Box>
-                New to us?{" "}
-                <Link color="teal.500" onClick={()=>setIsLogin(false)}>
-                    Sign Up
+                Already have an account?{" "}
+                <Link color="teal.500" onClick={()=>setIsLogin(true)}>
+                    Login
                 </Link>
             </Box>
         </Flex>
