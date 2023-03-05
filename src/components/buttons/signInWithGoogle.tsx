@@ -11,8 +11,9 @@ function signInWithGoogle() {
             bg="#fff"
             color="#000"
             variant="outline"
-            size="10lg"
+            size="101g"
             w='300px'
+            padding='7px'
             fontWeight="medium"
             border="2px solid #d5d5d5"
             borderRadius="10px"

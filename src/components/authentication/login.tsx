@@ -25,9 +25,27 @@ const CFaLock = chakra(FaLock);
 
 function login({setIsLogin}:any) {
     const [showPassword, setShowPassword] = useState(false);
-
+    const [error,setError] = useState('');
+    const [user,setUser] = useState({
+        email:'',
+        password:''
+    });
     const handleShowClick = () => setShowPassword(!showPassword);
+    const onChangeInput = (e:any) =>{
+        const {name,value} = e.target;
+        setUser({...user,[name]:value})
+        setError('')
+       }
 
+    const onSubmit = (e:any) =>{
+        e.preventDefault();
+        if(user.email === ''){
+            setError('Enter email address')
+        }
+        if(user.password === ''){
+            setError('Enter password')
+        }
+    };
     return (
         <Flex
             flexDirection="column"
@@ -39,7 +57,7 @@ function login({setIsLogin}:any) {
         >
             <Stack
                 flexDir="column"
-                mb="2"
+                mb="4"
                 justifyContent="center"
                 alignItems="center"
             >
@@ -76,7 +94,7 @@ function login({setIsLogin}:any) {
                                         pointerEvents="none"
                                         children={<CFaUserAlt color="gray.300" />}
                                     />
-                                    <Input type="email" placeholder="email address" />
+                                    <Input type="email" placeholder="email address" onChange={onChangeInput} value={user.email} name='email'/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -89,6 +107,9 @@ function login({setIsLogin}:any) {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Password"
+                                        name='password'
+                                        value={user.password}
+                                        onChange={onChangeInput}
                                     />
                                     <InputRightElement width="4.5rem">
                                         <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -106,9 +127,15 @@ function login({setIsLogin}:any) {
                                 variant="solid"
                                 colorScheme="green"
                                 width="full"
+                                onClick={onSubmit}
                             >
                                 Login
                             </Button>
+                            <Text
+                            color='red'
+                            textAlign='center'
+                            fontWeight='bold'
+                            >{error}</Text>
                         </Stack>
                     </form>
                 </Box>
