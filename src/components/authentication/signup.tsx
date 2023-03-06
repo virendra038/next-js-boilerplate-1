@@ -23,7 +23,7 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-function login({setIsLogin}:any) {
+function signUp({setIsLogin}:any) {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleShowClick = () => setShowPassword(!showPassword);
@@ -96,9 +96,6 @@ function login({setIsLogin}:any) {
                                         </Button>
                                     </InputRightElement>
                                 </InputGroup>
-                                <FormHelperText textAlign="right">
-                                    <Link>forgot password?</Link>
-                                </FormHelperText>
                             </FormControl>
                             <Button
                                 borderRadius={0}
@@ -107,16 +104,16 @@ function login({setIsLogin}:any) {
                                 colorScheme="green"
                                 width="full"
                             >
-                                Login
+                                Continue
                             </Button>
                         </Stack>
                     </form>
                 </Box>
             </Stack>
             <Box>
-                New to us?{" "}
-                <Link color="teal.500" onClick={()=>setIsLogin(false)}>
-                    Sign Up
+                Already have an account?{" "}
+                <Link color="teal.500" onClick={()=>setIsLogin(true)}>
+                    Login
                 </Link>
             </Box>
         </Flex>
@@ -124,4 +121,4 @@ function login({setIsLogin}:any) {
 
 }
 
-export default login
+export default signUp
