@@ -86,7 +86,7 @@ function signUp() {
                                 gap='15px'
                             >
                                 <Heading> Todo App </Heading>
-                                <Text>Remember Everything important</Text>
+                                <Text>Remember Everything important from anywhere</Text>
                                 <SignInWithGoogle/>
                                 <Flex alignItems="center" my={4}>
                                     <Divider flex={1} borderColor="#cbd5e0" />
