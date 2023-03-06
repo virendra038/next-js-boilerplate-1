@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/database/db";
 import todoCol from "@/database/todoCol";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const  handler = async function (req: NextApiRequest, res: NextApiResponse) {
     await connectDB();
     try {
         if (req.method === "GET") {

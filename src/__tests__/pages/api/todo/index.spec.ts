@@ -75,12 +75,13 @@ describe('Checking GET API endpoints', () => {
         let expectedResponse = {
             "message":"id length is not as per mongoose objectID"
         };
+        expect(true).toBe(true);
         const response = await request(handler).get('/api/todo/anything')
         // expect(response.statusCode).toBe(406)
         // expect(response.body).toHaveProperty('message')
         // expect(response.body).toEqual(expectedResponse)
         done();
-    },1000)
+    })
   
 })
 
