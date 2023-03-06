@@ -15,7 +15,6 @@ import {
     Text,
     Divider,
     FormControl,
-    FormHelperText,
     InputRightElement
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
@@ -25,9 +24,36 @@ const CFaLock = chakra(FaLock);
 
 function signUp({setIsLogin}:any) {
     const [showPassword, setShowPassword] = useState(false);
+    const [user,setUser] = useState({
+        email:'',
+        password:''
+    })
+    const [err,setErr] = useState('')
+
+   const onChangeInput = (e:any) =>{
+    const {name,value} = e.target;
+    setUser({...user,[name]:value})
+    setErr('')
+   }
 
     const handleShowClick = () => setShowPassword(!showPassword);
-
+    const onSubmit = ()=>{
+        if(user.email ==='' && user.password ===''){
+            setErr("Enter email and password");
+        }
+        else if(user.email === ''){
+            setErr("Enter email");
+        }
+        else if(user.password === ''){
+            setErr("Enter password");
+        }
+        else{
+            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if(!user.email.match(validRegex)){
+                setErr('Enter a valid email address')
+            }
+        }
+    }
     return (
         <Flex
             flexDirection="column"
@@ -76,7 +102,7 @@ function signUp({setIsLogin}:any) {
                                         pointerEvents="none"
                                         children={<CFaUserAlt color="gray.300" />}
                                     />
-                                    <Input type="email" placeholder="email address" />
+                                    <Input type="email" name='email' onChange={onChangeInput} value={user.email} placeholder="email address" />
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -89,12 +115,16 @@ function signUp({setIsLogin}:any) {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Password"
+                                        name='password'
+                                        value={user.password}
+                                        onChange={onChangeInput}
                                     />
                                     <InputRightElement width="4.5rem">
                                         <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                                             {showPassword ? "Hide" : "Show"}
                                         </Button>
                                     </InputRightElement>
+                                    <Text>{err}</Text>
                                 </InputGroup>
                             </FormControl>
                             <Button
