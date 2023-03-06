@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import SignInWithGoogle from '../buttons/signInWithGoogle'
+import SignInWithGoogle from '../../components/buttons/signInWithGoogle'
 import {
     Flex,
     Heading,
@@ -23,7 +23,7 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-function login({setIsLogin}:any) {
+function login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleShowClick = () => setShowPassword(!showPassword);
@@ -115,7 +115,7 @@ function login({setIsLogin}:any) {
             </Stack>
             <Box>
                 New to us?{" "}
-                <Link color="teal.500" onClick={()=>setIsLogin(false)}>
+                <Link color="teal.500" href='/auth/signup'>
                     Sign Up
                 </Link>
             </Box>
