@@ -23,9 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(201).send("Saved it!")
         }
     }catch (err) {
-        res.status(400).send((err as Error).message);
+        // res.status(400).send((err as Error).message);
     }
 }
 
 
-
+module.exports = handler
