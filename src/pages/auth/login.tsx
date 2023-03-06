@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import SignInWithGoogle from '../buttons/signInWithGoogle'
+import SignInWithGoogle from '../../components/buttons/signInWithGoogle'
 import {
     Flex,
     Heading,
@@ -115,7 +115,7 @@ function login() {
             </Stack>
             <Box>
                 New to us?{" "}
-                <Link color="teal.500" href="#">
+                <Link color="teal.500" href='/auth/signup'>
                     Sign Up
                 </Link>
             </Box>
