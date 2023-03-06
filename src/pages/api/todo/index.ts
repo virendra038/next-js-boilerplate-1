@@ -18,9 +18,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.status(200).send(todoData)
         }
         else if ( req.method === "POST" ){
-            const todoData = new todoCol(req.body);
+            const{
+                task,
+                priority,
+                dueDate,
+                done} = req.body;
+            if ( !task || !priority || !dueDate || !done ){
+                res.status(200).send({message:"Incomplete Data!"})
+                return;
+            }
+            const todoData = new todoCol({task, priority, dueDate , done});
             await todoData.save();
-            res.status(201).send("Saved it!")
+            res.status(201).send({message:"Saved it!"})
         }
     }catch (err) {
         res.status(400).send((err as Error).message);
