@@ -32,17 +32,13 @@ describe("Render the input form component", () => {
         expect(passwordInput.type).toBe('password');
       });
 
-    //   it('submits the form with user credentials when Login button is clicked', async () => {
-    //     const mockOnSubmit = jest.fn();
-    //     render(<InputForm user={user} onSubmit={mockOnSubmit} />);
-    //     const emailInput = screen.getByPlaceholderText('email address');
-    //     const passwordInput = screen.getByPlaceholderText('Password');
-    //     const loginButton = screen.getByText('Login');
-       
-    //     fireEvent.click(loginButton);
-    //     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-    //     expect(mockOnSubmit).toHaveBeenCalledWith({ email: 'email@example.com', password: 'password' });
-    //   });
+      test('triggers onSubmit function when login button is clicked', () => {
+        const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
+        const { getByText } = render(<InputForm onSubmit={onSubmit}/>);
+        const loginButton = getByText('Login');
+        fireEvent.click(loginButton);
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+      });
 
       it('shows error message when there is an error', () => {
         const errorMessage = 'Invalid credentials';
