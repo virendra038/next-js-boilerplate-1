@@ -31,7 +31,6 @@ describe("Render the input form component", () => {
         fireEvent.click(showButton);
         expect(passwordInput.type).toBe('password');
       });
-
       // it('submits the form with user credentials when Login button is clicked', async () => {
       //   const mockOnSubmit = jest.fn();
       //   render(<InputForm user={user} onSubmit={mockOnSubmit} />);
@@ -49,6 +48,4 @@ describe("Render the input form component", () => {
         render(<InputForm user={user} err={errorMessage} />);
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
       });
-
-
 })
