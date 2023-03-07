@@ -32,7 +32,7 @@ const  handler = async function (req: NextApiRequest, res: NextApiResponse) {
             res.status(201).send({message:"Saved it!"})
         }
     }catch (err) {
-        // res.status(400).send((err as Error).message);
+        res.status(400).send((err as Error).message);
     }
 }
 
