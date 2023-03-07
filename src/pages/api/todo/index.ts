@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 priority,
                 dueDate,
                 done} = req.body;
-            if ( !task || !priority || !dueDate || !done ){
+            if ( !task || !priority || !dueDate || done === undefined ){
                 res.status(200).send({message:"Incomplete Data!"})
                 return;
             }
