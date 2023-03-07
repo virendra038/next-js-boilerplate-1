@@ -23,7 +23,8 @@ function login() {
    }
 
     
-    const onSubmit = ()=>{
+    const onSubmit = (e:any)=>{
+        e.preventDefault()
         if(user.email ==='' && user.password ===''){
             setErr("Enter email and password");
         }
@@ -39,6 +40,7 @@ function login() {
                 setErr('Enter a valid email address')
             }
         }
+        console.log(user);
     }
     return (
         <Flex

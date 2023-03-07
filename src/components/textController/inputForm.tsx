@@ -32,7 +32,7 @@ function inputForm({onChangeInput,user,err,onSubmit}:any) {
     const handleShowClick = () => setShowPassword(!showPassword);
     return (
         <>
-             <form>
+             <form role='form' onSubmit={onSubmit} >
                         <Stack
                             spacing={4}
                             p="1rem"
@@ -96,7 +96,6 @@ function inputForm({onChangeInput,user,err,onSubmit}:any) {
                                 variant="solid"
                                 colorScheme="green"
                                 width="full"
-                                onClick={onSubmit}
                             >
                                 Login
                             </Button>
