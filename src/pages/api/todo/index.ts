@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/database/db";
 import todoCol from "@/database/todoCol";
 
-const  handler = async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB();
     try {
         if (req.method === "GET") {
@@ -37,4 +37,3 @@ const  handler = async function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-module.exports = handler
