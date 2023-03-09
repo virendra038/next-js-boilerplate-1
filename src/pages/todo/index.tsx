@@ -10,7 +10,6 @@ interface TodoProps {
 export default function Todo({ todos }: TodoProps) {
   return <TodoList todos={todos} />;
 }
-// test
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let dueDate =
