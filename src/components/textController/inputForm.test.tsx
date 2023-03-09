@@ -1,6 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 import InputForm from './inputForm';
-import userEvent from '@testing-library/user-event';
 
 const user = {
     email: 'email@example.com',
@@ -34,9 +33,17 @@ describe("Render the input form component", () => {
 
       test('triggers onSubmit function when login button is clicked', () => {
         const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
-        const { getByText } = render(<InputForm onSubmit={onSubmit}/>);
+        const { getByText } = render(<InputForm onSubmit={onSubmit} login={true}/>);
         const loginButton = getByText('Login');
         fireEvent.click(loginButton);
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+      });
+
+      test('triggers onSubmit function when continue button is clicked', () => {
+        const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
+        const { getByText } = render(<InputForm onSubmit={onSubmit} login={false}/>);
+        const continueButton = getByText('Continue');
+        fireEvent.click(continueButton);
         expect(onSubmit).toHaveBeenCalledTimes(1);
       });
 

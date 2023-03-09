@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <ChakraProvider>
-        <Login/>
+        <Login login={login} setIsLogin={setIsLogin} />
       </ChakraProvider>
     </>
   )

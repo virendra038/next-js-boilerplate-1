@@ -12,7 +12,7 @@ import {
     Divider,
 } from "@chakra-ui/react";
 
-function signUp() {
+function signUp({login,setIsLogin}:any) {
     const [user,setUser] = useState({
         email:'',
         password:''
@@ -60,12 +60,12 @@ function signUp() {
             >
 
                 <Box minW={{ base: "90%", md: "468px" }}>
-                <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user}/>
+                <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user} login={login}/>
                 </Box>
             </Stack>
             <Box>
                 Already have an account?{" "}
-                <Link color="teal.500" href='/auth/login' >
+                <Link color="teal.500" href='/auth/login' onClick={()=>setIsLogin(true)}>
                     Login
                 </Link>
             </Box>

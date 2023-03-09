@@ -9,7 +9,7 @@ import {
 import InputForm from '../../components/textController/inputForm';
 
 
-function login() {
+function login({login,setIsLogin}:any) {
     const [user,setUser] = useState({
         email:'',
         password:''
@@ -59,12 +59,12 @@ function login() {
             >
 
                 <Box minW={{ base: "90%", md: "468px" }}>
-                   <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user}/>
+                   <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user} login={login}/>
                 </Box>
             </Stack>
             <Box>
                 New to us?{" "}
-                <Link color="teal.500" href='/auth/signup'>
+                <Link color="teal.500" href='/auth/signup' onClick={()=>setIsLogin(false)}>
                     Sign Up
                 </Link>
             </Box>
