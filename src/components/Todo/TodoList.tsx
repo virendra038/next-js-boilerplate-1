@@ -11,15 +11,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import type { TodoData } from "@/types/todo.type";
+import { useState } from "react";
 
 interface TodosProps {
   todos: TodoData[];
+  CheckboxToggle: (id: string) => void;
 }
-
-const handleCheckboxClick = () => {
-  console.log("clicked");
-  //send put req to toggle the done property of the todo
-};
 
 const handleInputUpdate = () => {
   console.log("input updated");
@@ -31,7 +28,29 @@ const handleTodoDoubleClick = () => {
   //send redirect req to the specific todo page
 };
 
-export default function TodoList({ todos }: TodosProps) {
+export default function TodoList({
+  todos: initialTodos,
+  CheckboxToggle,
+}: TodosProps) {
+  const [todos, setTodos] = useState<TodoData[]>(initialTodos);
+
+  const handleCheckboxClick = async (id: string) => {
+    console.log("clicked");
+    //send put req to toggle the done property of the todo
+    try {
+      await CheckboxToggle(id);
+      const updatedTodos = todos.map((todo) => {
+        if (todo._id.toString() === id) {
+          return { ...todo, done: !todo.done };
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <TableContainer>
       <Table variant="simple">
@@ -50,9 +69,10 @@ export default function TodoList({ todos }: TodosProps) {
                         <EditableInput onInput={handleInputUpdate} />
                       </Editable>
                       <Checkbox
-                        onClick={
-                          handleCheckboxClick
-                        } /*onClick={mark the todo done and send req on backend}*/
+                        isChecked={todo.done}
+                        onChange={(e) => {
+                          handleCheckboxClick(todo._id.toString());
+                        }} /*onClick={mark the todo done and send req on backend}*/
                       />
                     </Stack>
                   </Td>
