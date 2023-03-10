@@ -8,7 +8,7 @@ import {
 import type { TodoData } from "@/types/todo.type";
 import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 
 interface TodoProps {
   todos: TodoData[];
@@ -32,12 +32,20 @@ export default function Todo({ todos }: TodoProps) {
       justifyContent="center"
       alignItems="center"
     >
-      <Box minW={{ base: "90%", md: "468px" }}>
+      <Heading size="lg" as="h3">
+        Todos
+      </Heading>
+      <Box minW={{ base: "90%", md: "468px" }} mb="2">
         <TodoList
           TodoTaskUpdate={TodoTaskUpdate}
           CheckboxToggle={CheckboxToggle}
           todos={todos}
         />
+      </Box>
+      <Box>
+        <Button colorScheme="purple">
+          Add Todo
+        </Button>
       </Box>
     </Flex>
   );

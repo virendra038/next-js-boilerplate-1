@@ -22,7 +22,6 @@ interface TodosProps {
   todos: TodoData[];
   CheckboxToggle: (id: string) => void;
   TodoTaskUpdate: (id: string, data: string) => void;
-  AddTodo: () => void;
 }
 
 const handleTodoDoubleClick = () => {
@@ -34,7 +33,6 @@ export default function TodoList({
   todos: initialTodos,
   CheckboxToggle,
   TodoTaskUpdate,
-  AddTodo
 }: TodosProps) {
   const [todos, setTodos] = useState<TodoData[]>(initialTodos);
 
@@ -79,9 +77,6 @@ export default function TodoList({
 
   return (
     <TableContainer>
-      <Heading size="lg" as="h3">
-        Todos
-      </Heading>
       <Table variant="simple">
         <Thead>
           <Tr>
@@ -133,9 +128,9 @@ export default function TodoList({
             </Tr>
           )}
         </Tbody>
-          <TableCaption>
+          {/* <TableCaption>
             <Button colorScheme="purple" onClick={(e) => handleAddTodoClick(e)}>Add Todo</Button>
-          </TableCaption>
+          </TableCaption> */}
       </Table>
     </TableContainer>
   );
