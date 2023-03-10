@@ -1,8 +1,14 @@
 import TodoList from "@/components/Todo/TodoList";
-import { getTodos, getTodosByDueDate } from "@/services/todo.service";
+import {
+  getTodos,
+  getTodosByDueDate,
+  updateTodo,
+  updateTodoTask,
+} from "@/services/todo.service";
 import type { TodoData } from "@/types/todo.type";
 import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
+import { Box, Flex } from "@chakra-ui/react";
 
 interface TodoProps {
   todos: TodoData[];
@@ -12,8 +18,29 @@ async function CheckboxToggle(id: string) {
   await markTodoAsDone(id);
 }
 
+async function TodoTaskUpdate(id: string, data: string) {
+  await updateTodoTask(id, data);
+}
+
 export default function Todo({ todos }: TodoProps) {
-  return <TodoList CheckboxToggle={CheckboxToggle} todos={todos} />;
+  return (
+    <Flex
+      flexDirection="column"
+      width="100wh"
+      height="100vh"
+      backgroundColor="gray.200"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box minW={{ base: "90%", md: "468px" }}>
+        <TodoList
+          TodoTaskUpdate={TodoTaskUpdate}
+          CheckboxToggle={CheckboxToggle}
+          todos={todos}
+        />
+      </Box>
+    </Flex>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

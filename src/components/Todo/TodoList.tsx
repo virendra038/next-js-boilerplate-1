@@ -11,19 +11,19 @@ import {
   Stack,
   Thead,
   TableCaption,
+  Heading,
+  Flex,
+  Button,
 } from "@chakra-ui/react";
 import type { TodoData } from "@/types/todo.type";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface TodosProps {
   todos: TodoData[];
   CheckboxToggle: (id: string) => void;
+  TodoTaskUpdate: (id: string, data: string) => void;
+  AddTodo: () => void;
 }
-
-const handleInputUpdate = () => {
-  console.log("input updated");
-  //send put req to update the task property of the todo
-};
 
 const handleTodoDoubleClick = () => {
   console.log("double clicked");
@@ -33,13 +33,15 @@ const handleTodoDoubleClick = () => {
 export default function TodoList({
   todos: initialTodos,
   CheckboxToggle,
+  TodoTaskUpdate,
+  AddTodo
 }: TodosProps) {
   const [todos, setTodos] = useState<TodoData[]>(initialTodos);
 
   const handleCheckboxClick = async (id: string) => {
     //send put req to toggle the done property of the todo
     try {
-      await CheckboxToggle(id);
+      CheckboxToggle(id);
       const updatedTodos = todos.map((todo) => {
         if (todo._id.toString() === id) {
           return { ...todo, done: !todo.done };
@@ -52,10 +54,35 @@ export default function TodoList({
     }
   };
 
+  const handleAddTodoClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("add todo clicked");
+    console.log(e)
+    //send redirect req to the specific todo page
+  };
+
+  const handleInputUpdate = async (id: string, data: string) => {
+    // console.log(data);
+    //send put req to update the task property of the todo
+    try {
+      TodoTaskUpdate(id, data);
+      const updatedTodos = todos.map((todo) => {
+        if (todo._id.toString() === id) {
+          return { ...todo, task: data };
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <TableContainer>
+      <Heading size="lg" as="h3">
+        Todos
+      </Heading>
       <Table variant="simple">
-        <TableCaption>Todos</TableCaption>
         <Thead>
           <Tr>
             <Td>Task</Td>
@@ -64,7 +91,7 @@ export default function TodoList({
             <Td>Status</Td>
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody width="100%" minW={{ base: "1000px" }}>
           {todos.length > 0 ? (
             todos.map((todo, index) => {
               return (
@@ -73,6 +100,9 @@ export default function TodoList({
                     <Editable
                       defaultValue={todo.task}
                       onDoubleClick={handleTodoDoubleClick}
+                      onSubmit={(data) =>
+                        handleInputUpdate(todo._id.toString(), data)
+                      }
                     >
                       <EditablePreview
                         style={{
@@ -80,13 +110,14 @@ export default function TodoList({
                           textDecoration: todo.done ? "line-through" : "none",
                         }}
                       />
-                      <EditableInput onInput={handleInputUpdate} />
+                      <EditableInput />
                     </Editable>
                   </Td>
                   <Td>{todo.priority}</Td>
                   <Td>{todo.dueDate.toString().split("T")[0]}</Td>
                   <Td>
                     <Checkbox
+                      outline={todo.done ? "none" : "2px solid red"}
                       isChecked={todo.done}
                       onChange={(e) => {
                         handleCheckboxClick(todo._id.toString());
@@ -102,6 +133,9 @@ export default function TodoList({
             </Tr>
           )}
         </Tbody>
+          <TableCaption>
+            <Button colorScheme="purple" onClick={(e) => handleAddTodoClick(e)}>Add Todo</Button>
+          </TableCaption>
       </Table>
     </TableContainer>
   );
