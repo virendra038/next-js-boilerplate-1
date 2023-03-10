@@ -5,7 +5,6 @@ import { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
 
 async function CheckboxToggle(id: string) {
-  console.log("todo marked as done init");
   await markTodoAsDone(id);
 }
 
@@ -26,7 +25,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
   try {
     todo = await getTodobyId(id);
-    // console.log("todo by id ", todo);
     return {
       props: {
         ...todo,
