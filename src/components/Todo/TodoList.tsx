@@ -9,6 +9,8 @@ import {
   Tr,
   Checkbox,
   Stack,
+  Thead,
+  TableCaption,
 } from "@chakra-ui/react";
 import type { TodoData } from "@/types/todo.type";
 import { useState } from "react";
@@ -53,27 +55,43 @@ export default function TodoList({
   return (
     <TableContainer>
       <Table variant="simple">
+        <TableCaption>Todos</TableCaption>
+        <Thead>
+          <Tr>
+            <Td>Task</Td>
+            <Td>Priority</Td>
+            <Td>Due Date</Td>
+            <Td>Status</Td>
+          </Tr>
+        </Thead>
         <Tbody>
           {todos.length > 0 ? (
             todos.map((todo, index) => {
               return (
                 <Tr key={index}>
                   <Td>
-                    <Stack direction={"row"} justifyContent="space-between">
-                      <Editable
-                        defaultValue={todo.task}
-                        onDoubleClick={handleTodoDoubleClick}
-                      >
-                        <EditablePreview />
-                        <EditableInput onInput={handleInputUpdate} />
-                      </Editable>
-                      <Checkbox
-                        isChecked={todo.done}
-                        onChange={(e) => {
-                          handleCheckboxClick(todo._id.toString());
-                        }} /*onClick={mark the todo done and send req on backend}*/
+                    <Editable
+                      defaultValue={todo.task}
+                      onDoubleClick={handleTodoDoubleClick}
+                    >
+                      <EditablePreview
+                        style={{
+                          color: todo.done ? "green" : "red",
+                          textDecoration: todo.done ? "line-through" : "none",
+                        }}
                       />
-                    </Stack>
+                      <EditableInput onInput={handleInputUpdate} />
+                    </Editable>
+                  </Td>
+                  <Td>{todo.priority}</Td>
+                  <Td>{todo.dueDate.toString().split("T")[0]}</Td>
+                  <Td>
+                    <Checkbox
+                      isChecked={todo.done}
+                      onChange={(e) => {
+                        handleCheckboxClick(todo._id.toString());
+                      }} /*onClick={mark the todo done and send req on backend}*/
+                    />
                   </Td>
                 </Tr>
               );
