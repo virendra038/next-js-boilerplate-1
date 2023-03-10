@@ -9,7 +9,6 @@ interface TodoProps {
 }
 
 async function CheckboxToggle(id: string) {
-  console.log("todo marked as done init");
   await markTodoAsDone(id);
 }
 
