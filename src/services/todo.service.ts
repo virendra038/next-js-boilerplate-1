@@ -40,5 +40,5 @@ export const markTodoAsDone = async (id: string) => {
     done: !done,
   });
   const response = await updateTodo(id, updatedTodo);
-  return updatedTodo;
+  return response;
 };
