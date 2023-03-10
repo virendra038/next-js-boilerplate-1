@@ -35,7 +35,6 @@ export default function TodoList({
   const [todos, setTodos] = useState<TodoData[]>(initialTodos);
 
   const handleCheckboxClick = async (id: string) => {
-    console.log("clicked");
     //send put req to toggle the done property of the todo
     try {
       await CheckboxToggle(id);
