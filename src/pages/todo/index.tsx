@@ -14,11 +14,11 @@ interface TodoProps {
   todos: TodoData[];
 }
 
-async function CheckboxToggle(id: string) {
+export async function CheckboxToggle(id: string) {
   await markTodoAsDone(id);
 }
 
-async function TodoTaskUpdate(id: string, data: string) {
+export async function TodoTaskUpdate(id: string, data: string) {
   await updateTodoTask(id, data);
 }
 

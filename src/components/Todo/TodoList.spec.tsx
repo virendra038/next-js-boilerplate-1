@@ -1,62 +1,53 @@
-import { render, screen } from "@testing-library/react";
-import Todo from "@/components/Todo/TodoList";
+import React from "react";
+import { render,screen, fireEvent } from "@testing-library/react";
+import TodoList from "./TodoList";
 
-const fakeInput = ["Movie", "Snacks"];
+describe("TodoList Component", () => {
+  const todos = [
+    {
+      _id: 1,
+      task: "Task 1",
+      priority: "High",
+      dueDate: "2022-01-01",
+      done: false,
+    },
+    {
+      _id: 2,
+      task: "Task 2",
+      priority: "Medium",
+      dueDate: "2022-02-02",
+      done: true,
+    },
+  ];
 
-jest.mock("@chakra-ui/react", () => ({
-  ...jest.requireActual("@chakra-ui/react"),
-  Editable: ({ children }) => <div>{children}</div>,
-  EditableInput: () => (
-    <div>
-      {["Movie", "Snacks"].map((value, index) => (
-        <div key={index}>{value}</div>
-      ))}
-    </div>
-  ),
-  EditablePreview: () => <span></span>,
-  Table: ({ children }) => <table>{children}</table>,
-  TableContainer: ({ children }) => <div>{children}</div>,
-  Tbody: ({ children }) => <tbody>{children}</tbody>,
-  Td: ({ children }) => <td>{children}</td>,
-  Th: ({ children }) => <th>{children}</th>,
-  Tr: ({ children }) => <tr>{children}</tr>,
-}));
+  const CheckboxToggle = jest.fn();
+  const TodoTaskUpdate = jest.fn();
 
-describe("Todo with data", () => {
   beforeEach(() => {
-    render(<Todo todos={["Movie", "Snacks"]} />);
+    jest.clearAllMocks();
   });
 
-  it("checks for the table component", () => {
-    const table = screen.getByRole("table");
-    expect(table).toBeInTheDocument();
+  it("renders the TodoList component", () => {
+    const { getByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
+
+    expect(getByText("Task")).toBeInTheDocument();
+    expect(getByText("Priority")).toBeInTheDocument();
+    expect(getByText("Due Date")).toBeInTheDocument();
+    expect(getByText("Status")).toBeInTheDocument();
   });
 
-  it("checks the text of the task", () => {
-    // const myElement = screen.getByText(/Movie/);
-    const myElementScacks = screen.getAllByText("Snacks");
-    expect(myElementScacks[0]).toBeInTheDocument();
-    // expect(myElement).toBeInTheDocument();
-    expect(myElementScacks).toHaveLength(2);
-  });
-  it("renders the checkbox", () => {
-    const checkbox = screen.getAllByRole("checkbox");
-    expect(checkbox[0]).toBeInTheDocument();
-  });
-});
+  it("renders the tasks with correct information", () => {
+    const { getByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
 
-describe("Todo without data", () => {
-  beforeEach(() => {
-    render(<Todo todos={[]} />);
-  });
-
-  it("checks for the table component", () => {
-    const table = screen.getByRole("table");
-    expect(table).toBeInTheDocument();
-  });
-
-  it("checks the text of the task", () => {
-    const myElement = screen.getByText("No Tasks found");
-    expect(myElement).toBeInTheDocument();
+    expect(getByText("Task 1")).toBeInTheDocument();
+    expect(getByText("Task 2")).toBeInTheDocument();
+    expect(getByText("High")).toBeInTheDocument();
+    expect(getByText("Medium")).toBeInTheDocument();
+    expect(getByText("2022-01-01")).toBeInTheDocument();
+    expect(getByText("2022-02-02")).toBeInTheDocument();
   });
 });
