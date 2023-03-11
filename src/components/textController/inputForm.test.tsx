@@ -1,5 +1,6 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 import InputForm from './inputForm';
+import userEvent from '@testing-library/user-event';
 
 const user = {
     email: 'email@example.com',
@@ -30,10 +31,20 @@ describe("Render the input form component", () => {
         fireEvent.click(showButton);
         expect(passwordInput.type).toBe('password');
       });
-     
+
+      test('triggers onSubmit function when login button is clicked', () => {
+        const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
+        const { getByText } = render(<InputForm onSubmit={onSubmit}/>);
+        const loginButton = getByText('Login');
+        fireEvent.click(loginButton);
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+      });
+
       it('shows error message when there is an error', () => {
         const errorMessage = 'Invalid credentials';
         render(<InputForm user={user} err={errorMessage} />);
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
       });
+
+
 })

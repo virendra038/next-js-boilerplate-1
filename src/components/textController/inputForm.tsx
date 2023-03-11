@@ -77,7 +77,7 @@ function inputForm({onChangeInput,user,err,onSubmit}:any) {
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Password"
                                         name='password'
-                                        onChange={onChangeInput}                   
+                                        onChange={onChangeInput}
                                     />
                                     <InputRightElement width="4.5rem">
                                         <Button h="1.75rem" size="sm" onClick={handleShowClick}>
