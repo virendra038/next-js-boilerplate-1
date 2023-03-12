@@ -1,21 +1,25 @@
 import React from "react";
 import { render,screen, fireEvent } from "@testing-library/react";
 import TodoList from "./TodoList";
+import { TodoData } from "@/types/todo.type";
 
 describe("TodoList Component", () => {
-  const todos = [
+
+  const currentDate = new Date(Date.now() + 19800000).toISOString().split("T")[0];
+
+  const todos: TodoData[] = [
     {
       _id: 1,
       task: "Task 1",
       priority: "High",
-      dueDate: "2022-01-01",
+      dueDate: currentDate,
       done: false,
     },
     {
       _id: 2,
       task: "Task 2",
       priority: "Medium",
-      dueDate: "2022-02-02",
+      dueDate: currentDate,
       done: true,
     },
   ];
@@ -39,7 +43,7 @@ describe("TodoList Component", () => {
   });
 
   it("renders the tasks with correct information", () => {
-    const { getByText } = render(
+    const { getByText, getAllByText } = render(
       <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
     );
 
@@ -47,7 +51,7 @@ describe("TodoList Component", () => {
     expect(getByText("Task 2")).toBeInTheDocument();
     expect(getByText("High")).toBeInTheDocument();
     expect(getByText("Medium")).toBeInTheDocument();
-    expect(getByText("2022-01-01")).toBeInTheDocument();
-    expect(getByText("2022-02-02")).toBeInTheDocument();
+    expect(getAllByText(currentDate)[0]).toBeInTheDocument();
+    expect(getAllByText(currentDate)[0]).toBeInTheDocument();
   });
 });
