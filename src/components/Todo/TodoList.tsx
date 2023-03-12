@@ -8,12 +8,7 @@
     Td,
     Tr,
     Checkbox,
-    Stack,
     Thead,
-    TableCaption,
-    Heading,
-    Flex,
-    Button,
   } from "@chakra-ui/react";
   import type { TodoData } from "@/types/todo.type";
   import React, { useState } from "react";
@@ -25,7 +20,7 @@
   }
 
   const handleTodoDoubleClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log(e);
+    // console.log(e);
     console.log("double clicked");
     //send redirect req to the specific todo page
   };
@@ -54,7 +49,6 @@
     };
 
     const handleInputUpdate = async (id: string, data: string) => {
-      // console.log(data);
       //send put req to update the task property of the todo
       try {
         TodoTaskUpdate(id, data);
@@ -107,6 +101,8 @@
                     <Td>{todo.dueDate.toString().split("T")[0]}</Td>
                     <Td>
                       <Checkbox
+                        // name={todo.task}
+                        aria-label={todo.task}
                         outline={todo.done ? "none" : "2px solid red"}
                         isChecked={todo.done}
                         onChange={(e) => {
@@ -123,9 +119,6 @@
               </Tr>
             )}
           </Tbody>
-            {/* <TableCaption>
-              <Button colorScheme="purple" onClick={(e) => handleAddTodoClick(e)}>Add Todo</Button>
-            </TableCaption> */}
         </Table>
       </TableContainer>
     );
