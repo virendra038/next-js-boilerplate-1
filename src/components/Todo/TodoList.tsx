@@ -24,7 +24,7 @@
     TodoTaskUpdate: (id: string, data: string) => void;
   }
 
-  const handleTodoDoubleClick = (e ) => {
+  const handleTodoDoubleClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     console.log(e);
     console.log("double clicked");
     //send redirect req to the specific todo page
