@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 dueDate,
                 done} = req.body;
             if ( !task || !priority || !dueDate || done === undefined ){
-                res.status(200).send({message:"Incomplete Data!"})
+                res.status(400).send({message:"Incomplete Data!"})
                 return;
             }
             const todoData = new todoCol({task, priority, dueDate , done});
