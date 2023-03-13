@@ -1,7 +1,7 @@
 export type TodoData = {
-  id: number;
+  _id: number;
   task: string;
   priority: string;
-  dueDate: Date;
+  dueDate: Date | string;
   done: boolean;
 };

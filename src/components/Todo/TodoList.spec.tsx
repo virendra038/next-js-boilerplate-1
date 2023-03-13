@@ -1,62 +1,96 @@
-import { render, screen } from "@testing-library/react";
-import Todo from "@/components/Todo/TodoList";
+import React from "react";
+import { render,screen, fireEvent } from "@testing-library/react";
+import TodoList from "./TodoList";
+import { TodoData } from "@/types/todo.type";
 
-const fakeInput = ["Movie", "Snacks"];
+describe("TodoList Component", () => {
 
-jest.mock("@chakra-ui/react", () => ({
-  ...jest.requireActual("@chakra-ui/react"),
-  Editable: ({ children }) => <div>{children}</div>,
-  EditableInput: () => (
-    <div>
-      {["Movie", "Snacks"].map((value, index) => (
-        <div key={index}>{value}</div>
-      ))}
-    </div>
-  ),
-  EditablePreview: () => <span></span>,
-  Table: ({ children }) => <table>{children}</table>,
-  TableContainer: ({ children }) => <div>{children}</div>,
-  Tbody: ({ children }) => <tbody>{children}</tbody>,
-  Td: ({ children }) => <td>{children}</td>,
-  Th: ({ children }) => <th>{children}</th>,
-  Tr: ({ children }) => <tr>{children}</tr>,
-}));
+  const currentDate = new Date(Date.now() + 19800000).toISOString().split("T")[0];
 
-describe("Todo with data", () => {
+  const todos: TodoData[] = [
+    {
+      _id: 1,
+      task: "Task 1",
+      priority: "High",
+      dueDate: currentDate,
+      done: false,
+    },
+    {
+      _id: 2,
+      task: "Task 2",
+      priority: "Medium",
+      dueDate: currentDate,
+      done: true,
+    },
+  ];
+
+  const CheckboxToggle = jest.fn();
+  const TodoTaskUpdate = jest.fn();
+
   beforeEach(() => {
-    render(<Todo todos={["Movie", "Snacks"]} />);
+    CheckboxToggle.mockClear();
+    TodoTaskUpdate.mockClear();
   });
 
-  it("checks for the table component", () => {
-    const table = screen.getByRole("table");
-    expect(table).toBeInTheDocument();
+  it("renders the TodoList component", () => {
+    const { getByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
+
+    expect(getByText("Task")).toBeInTheDocument();
+    expect(getByText("Priority")).toBeInTheDocument();
+    expect(getByText("Due Date")).toBeInTheDocument();
+    expect(getByText("Status")).toBeInTheDocument();
   });
 
-  it("checks the text of the task", () => {
-    // const myElement = screen.getByText(/Movie/);
-    const myElementScacks = screen.getAllByText("Snacks");
-    expect(myElementScacks[0]).toBeInTheDocument();
-    // expect(myElement).toBeInTheDocument();
-    expect(myElementScacks).toHaveLength(2);
-  });
-  it("renders the checkbox", () => {
-    const checkbox = screen.getAllByRole("checkbox");
-    expect(checkbox[0]).toBeInTheDocument();
-  });
-});
+  it("renders the tasks with correct information", () => {
+    const { getByText, getAllByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
 
-describe("Todo without data", () => {
-  beforeEach(() => {
-    render(<Todo todos={[]} />);
+    expect(getByText("Task 1")).toBeInTheDocument();
+    expect(getByText("Task 2")).toBeInTheDocument();
+    expect(getByText("High")).toBeInTheDocument();
+    expect(getByText("Medium")).toBeInTheDocument();
+    expect(getAllByText(currentDate)[0]).toBeInTheDocument();
+    expect(getAllByText(currentDate)[0]).toBeInTheDocument();
   });
 
-  it("checks for the table component", () => {
-    const table = screen.getByRole("table");
-    expect(table).toBeInTheDocument();
+  it("calls the CheckboxToggle function when checkbox is clicked", () => {
+    const { getByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
+
+    // fireEvent.click(getByText("Task 1"));
+    fireEvent.click(screen.getByLabelText("Task 1"));
+    expect(CheckboxToggle).toHaveBeenCalledTimes(1);
+
+    CheckboxToggle.mockClear();
+
+    // fireEvent.click(getByText("Task 2"));
+    fireEvent.click(screen.getByLabelText("Task 2"));
+    expect(CheckboxToggle).toHaveBeenCalledTimes(1);
   });
 
-  it("checks the text of the task", () => {
-    const myElement = screen.getByText("No Tasks found");
-    expect(myElement).toBeInTheDocument();
+  it("updates the task when edited", () => {
+    const { getByText, getByDisplayValue } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
+
+    fireEvent.click(getByText("Task 1"));
+    fireEvent.change(getByDisplayValue("Task 1"), { target: { value: "Task 1 Updated" } });
+    fireEvent.keyDown(getByDisplayValue("Task 1 Updated"), { key: "Enter", code: "Enter" });
+    expect(TodoTaskUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it("toggles the checkbox when clicked", () => {
+    const { getByText } = render(
+      <TodoList todos={todos} CheckboxToggle={CheckboxToggle} TodoTaskUpdate={TodoTaskUpdate} />
+    );
+
+    const checkbox = screen.getByLabelText("Task 1");
+    fireEvent.click(checkbox);
+    expect(CheckboxToggle).toHaveBeenCalledTimes(1);
+    expect(checkbox).toBeChecked();
   });
 });
