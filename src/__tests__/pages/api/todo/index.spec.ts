@@ -7,8 +7,9 @@ import mongoose from 'mongoose';
 describe("test with instance",()=>{
 
     //starting the instance
+    var mongoServer: MongoMemoryServer;
     beforeAll(async()=>{
-        const mongoServer = await MongoMemoryServer.create();
+        mongoServer = await MongoMemoryServer.create();
         await mongoose.connect(mongoServer.getUri());
     })
     
@@ -16,6 +17,7 @@ describe("test with instance",()=>{
     afterAll(async()=>{
         await mongoose.disconnect();
         await mongoose.connection.close();
+        mongoServer.stop();
     })
  
     // ESY-191
