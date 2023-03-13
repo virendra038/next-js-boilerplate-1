@@ -13,6 +13,7 @@ function signInWithGoogle() {
             variant="outline"
             size="10lg"
             w='300px'
+            p='8px'
             fontWeight="medium"
             border="2px solid #d5d5d5"
             borderRadius="10px"
