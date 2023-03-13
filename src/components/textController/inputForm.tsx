@@ -27,80 +27,81 @@ const CFaLock = chakra(FaLock);
 
 
 
-function inputForm({onChangeInput,user,err,onSubmit}:any) {
+function inputForm({ onChangeInput, err, onSubmit, login }: any) {
     const [showPassword, setShowPassword] = useState(false);
     const handleShowClick = () => setShowPassword(!showPassword);
     return (
         <>
-             <form role='form' onSubmit={onSubmit} >
-                        <Stack
-                            spacing={4}
-                            p="1rem"
-                            backgroundColor="whiteAlpha.900"
-                            boxShadow="md"
-                        >
-                            <Box mb='10px' h='170px'
-                                display='flex'
-                                textAlign="center"
-                                alignItems="center"
-                                flexDirection='column' justifyContent='spaceBetween'
-                                gap='15px'
-                            >
-                                <Heading> Todo App </Heading>
-                                <Text>Remember Everything important</Text>
-                                <SignInWithGoogle/>
-                                <Flex alignItems="center" my={4}>
-                                    <Divider flex={1} borderColor="#cbd5e0" />
-                                    <Text mx={4} fontWeight="bold" color="gray.500">
-                                        or
-                                    </Text>
-                                    <Divider flex={1} borderColor="#cbd5e0" />
-                                </Flex>
-                            </Box>
-                            <FormControl>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        pointerEvents="none"
-                                        children={<CFaUserAlt color="gray.300" />}
-                                    />
-                                    <Input type="email" placeholder="email address" name='email'  onChange={onChangeInput}/>
-                                </InputGroup>
-                            </FormControl>
-                            <FormControl>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        pointerEvents="none"
-                                        color="gray.300"
-                                        children={<CFaLock color="gray.300" />}
-                                    />
-                                    <Input
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="Password"
-                                        name='password'
-                                        onChange={onChangeInput}
-                                    />
-                                    <InputRightElement width="4.5rem">
-                                        <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                                            {showPassword ? "Hide" : "Show"}
-                                        </Button>
-                                    </InputRightElement>
-                                </InputGroup>
-                                <FormHelperText textAlign="right">
-                                    <Link>forgot password?</Link>
-                                </FormHelperText>
-                            </FormControl>
-                            <Button
-                                borderRadius={0}
-                                type="submit"
-                                variant="solid"
-                                colorScheme="green"
-                                width="full"
-                            >
-                                Login
-                            </Button>
-                            <Text>{err}</Text>
-                        </Stack>
-                    </form>
+            <form role='form' onSubmit={onSubmit} >
+                <Stack
+                    spacing={4}
+                    p="1rem"
+                    backgroundColor="whiteAlpha.900"
+                    boxShadow="md"
+                >
+                    <Box mb='10px' h='170px'
+                        display='flex'
+                        textAlign="center"
+                        alignItems="center"
+                        flexDirection='column' justifyContent='spaceBetween'
+                        gap='15px'
+                    >
+                        <Heading> Todo App </Heading>
+                        <Text>Remember Everything important</Text>
+                        <SignInWithGoogle />
+                        <Flex alignItems="center" my={4}>
+                            <Divider flex={1} borderColor="#cbd5e0" />
+                            <Text mx={4} fontWeight="bold" color="gray.500">
+                                or
+                            </Text>
+                            <Divider flex={1} borderColor="#cbd5e0" />
+                        </Flex>
+                    </Box>
+                    <FormControl>
+                        <InputGroup>
+                            <InputLeftElement
+                                pointerEvents="none"
+                                children={<CFaUserAlt color="gray.300" />}
+                            />
+                            <Input type="text" placeholder="email address" name='email' onChange={onChangeInput} />
+                        </InputGroup>
+                    </FormControl>
+                    <FormControl>
+                        <InputGroup>
+                            <InputLeftElement
+                                pointerEvents="none"
+                                color="gray.300"
+                                children={<CFaLock color="gray.300" />}
+                            />
+                            <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                name='password'
+                                onChange={onChangeInput}
+                            />
+                            <InputRightElement width="4.5rem">
+                                <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                                    {showPassword ? "Hide" : "Show"}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                        {login ? <FormHelperText textAlign="right">
+                            <Link>forgot password?</Link>
+                        </FormHelperText> : <Text></Text>}
+
+                    </FormControl>
+                    <Button
+                        borderRadius={0}
+                        type="submit"
+                        variant="solid"
+                        colorScheme="green"
+                        width="full"
+                    >
+                     {login ? 'Login' : 'Continue'}   
+                    </Button>
+                    <Text textAlign='center' color='tomato' fontWeight='bold'>{err}</Text>
+                </Stack>
+            </form>
         </>
     )
 }
