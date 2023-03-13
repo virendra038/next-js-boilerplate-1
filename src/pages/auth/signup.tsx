@@ -8,11 +8,9 @@ import {
     Stack,
     Box,
     Link,
-    Text,
-    Divider,
 } from "@chakra-ui/react";
 
-function signUp() {
+function signUp({login,setIsLogin}:any) {
     const [user,setUser] = useState({
         email:'',
         password:''
@@ -26,7 +24,8 @@ function signUp() {
    }
 
     
-    const onSubmit = ()=>{
+    const onSubmit = (e:any)=>{
+        e.preventDefault();
         if(user.email ==='' && user.password ===''){
             setErr("Enter email and password");
         }
@@ -60,12 +59,12 @@ function signUp() {
             >
 
                 <Box minW={{ base: "90%", md: "468px" }}>
-                <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user}/>
+                <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user} login={false}/>
                 </Box>
             </Stack>
             <Box>
                 Already have an account?{" "}
-                <Link color="teal.500" href='/auth/login' >
+                <Link color="teal.500" href='/auth/login'>
                     Login
                 </Link>
             </Box>

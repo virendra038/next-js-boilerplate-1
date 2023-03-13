@@ -6,7 +6,6 @@ import { useState } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [login,setIsLogin] = useState(true)
   return (
     <>
       <ChakraProvider>
