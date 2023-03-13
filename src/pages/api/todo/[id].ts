@@ -34,9 +34,7 @@ export default async function app(req: NextApiRequest, res: NextApiResponse) {
         }
         else if ( req.method === 'PUT' ){
             await todoCol.findOneAndUpdate({_id},req.body,{new:false});
-            res.status(200).send({
-                message:"Updated data succesfully!"
-            });
+            res.status(204).end();
         }
         else if ( req.method === "DELETE" ){
             await todoCol.deleteOne({_id});
