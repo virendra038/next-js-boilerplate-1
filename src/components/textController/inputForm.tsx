@@ -85,10 +85,9 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                         </Button>
                                     </InputRightElement>
                                 </InputGroup>
-                                {login ? <FormHelperText textAlign="right">
-                                    <Link>Forgot password ?</Link>
-                                </FormHelperText>: <Text></Text>}
-                                
+                                {(login)?<FormHelperText textAlign="right">
+                                    <Link>forgot password?</Link>
+                                </FormHelperText>:<Text></Text>}
                             </FormControl>
                             <Button
                                 borderRadius={0}
