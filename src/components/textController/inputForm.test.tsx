@@ -34,7 +34,7 @@ describe("Render the input form component", () => {
 
       test('triggers onSubmit function when login button is clicked', () => {
         const onSubmit = jest.fn().mockImplementation((e) => e.preventDefault());
-        const { getByText } = render(<InputForm onSubmit={onSubmit}/>);
+        const { getByText } = render(<InputForm onSubmit={onSubmit} login={true}/>);
         const loginButton = getByText('Login');
         fireEvent.click(loginButton);
         expect(onSubmit).toHaveBeenCalledTimes(1);

@@ -59,7 +59,7 @@ function login() {
             >
 
                 <Box minW={{ base: "90%", md: "468px" }}>
-                   <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user}/>
+                   <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user} login={true}/>
                 </Box>
             </Stack>
             <Box>

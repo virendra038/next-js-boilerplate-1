@@ -27,7 +27,7 @@ const CFaLock = chakra(FaLock);
 
 
 
-function inputForm({onChangeInput,user,err,onSubmit}:any) {
+function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
     const [showPassword, setShowPassword] = useState(false);
     const handleShowClick = () => setShowPassword(!showPassword);
     return (
@@ -85,9 +85,10 @@ function inputForm({onChangeInput,user,err,onSubmit}:any) {
                                         </Button>
                                     </InputRightElement>
                                 </InputGroup>
-                                <FormHelperText textAlign="right">
+                                {login ? <FormHelperText textAlign="right">
                                     <Link>forgot password?</Link>
-                                </FormHelperText>
+                                </FormHelperText>: <Text></Text>}
+                                
                             </FormControl>
                             <Button
                                 borderRadius={0}
@@ -96,7 +97,7 @@ function inputForm({onChangeInput,user,err,onSubmit}:any) {
                                 colorScheme="green"
                                 width="full"
                             >
-                                Login
+                               {login ? 'Login' : 'Continue'}
                             </Button>
                             <Text>{err}</Text>
                         </Stack>
