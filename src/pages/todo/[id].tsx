@@ -17,11 +17,6 @@ export default function Todo(todo: TodoData) {
   let todos = [];
   todos.push(todo);
   return (
-    // <TodoList
-    //   TodoTaskUpdate={TodoTaskUpdate}
-    //   CheckboxToggle={CheckboxToggle}
-    //   todos={todos}
-    // />
     <Flex
       flexDirection="column"
       width="100wh"
