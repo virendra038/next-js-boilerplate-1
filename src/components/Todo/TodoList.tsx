@@ -37,7 +37,7 @@
       try {
         CheckboxToggle(id);
         const updatedTodos = todos.map((todo) => {
-          if (todo._id.toString() === id) {
+          if (todo._id!.toString() === id) {
             return { ...todo, done: !todo.done };
           }
           return todo;
@@ -53,7 +53,7 @@
       try {
         TodoTaskUpdate(id, data);
         const updatedTodos = todos.map((todo) => {
-          if (todo._id.toString() === id) {
+          if (todo._id!.toString() === id) {
             return { ...todo, task: data };
           }
           return todo;
@@ -85,7 +85,7 @@
                         defaultValue={todo.task}
                         onDoubleClick={(e)=>{handleTodoDoubleClick(e)}}
                         onSubmit={(data) =>
-                          handleInputUpdate(todo._id.toString(), data)
+                          handleInputUpdate(todo._id!.toString(), data)
                         }
                       >
                         <EditablePreview
@@ -106,7 +106,7 @@
                         outline={todo.done ? "none" : "2px solid red"}
                         isChecked={todo.done}
                         onChange={(e) => {
-                          handleCheckboxClick(todo._id.toString());
+                          handleCheckboxClick(todo._id!.toString());
                         }} /*onClick={mark the todo done and send req on backend}*/
                       />
                     </Td>

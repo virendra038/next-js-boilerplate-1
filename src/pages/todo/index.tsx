@@ -1,14 +1,16 @@
 import TodoList from "@/components/Todo/TodoList";
 import {
+  createTodo,
   getTodos,
   getTodosByDueDate,
-  updateTodo,
   updateTodoTask,
 } from "@/services/todo.service";
 import type { TodoData } from "@/types/todo.type";
 import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import NewTask from "@/components/newTask/newTask";
+import { useState } from "react";
 
 interface TodoProps {
   todos: TodoData[];
@@ -22,30 +24,41 @@ export async function TodoTaskUpdate(id: string, data: string) {
   await updateTodoTask(id, data);
 }
 
+export async function CreateTask(task: TodoData) {
+  const newTask = await createTodo(task);
+}
+
 export default function Todo({ todos }: TodoProps) {
+  const [selectedPriority, setSelectedPriority] = useState("");
+
+  const handlePrioritySelection = (selectedPriority: string) => {
+    setSelectedPriority(selectedPriority);
+  };
+
   return (
     <Flex
       flexDirection="column"
       width="100wh"
       height="100vh"
       backgroundColor="gray.200"
-      justifyContent="center"
+      justifyContent="start"
       alignItems="center"
     >
       <Heading size="lg" as="h3">
         Todos
       </Heading>
-      <Box minW={{ base: "90%", md: "468px" }} mb="2">
+      <Box>
+        <NewTask CreateTask={CreateTask} />
+      </Box>
+      {/* <Box>
+        <PriorityDropdown handlePrioritySelection={handlePrioritySelection} />
+      </Box> */}
+      <Box mb="2">
         <TodoList
           TodoTaskUpdate={TodoTaskUpdate}
           CheckboxToggle={CheckboxToggle}
           todos={todos}
         />
-      </Box>
-      <Box>
-        <Button colorScheme="purple">
-          Add Todo
-        </Button>
       </Box>
     </Flex>
   );
