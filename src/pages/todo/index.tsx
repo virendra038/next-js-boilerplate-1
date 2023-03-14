@@ -11,6 +11,7 @@ import { markTodoAsDone } from "@/services/todo.service";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import NewTask from "@/components/newTask/newTask";
 import { useState } from "react";
+import Sidebar from "@/components/sideNav/sideNav";
 
 interface TodoProps {
   todos: TodoData[];
@@ -36,6 +37,8 @@ export default function Todo({ todos }: TodoProps) {
   };
 
   return (
+    <>
+    <Sidebar username="Puneet" />
     <Flex
       flexDirection="column"
       width="100wh"
@@ -61,6 +64,7 @@ export default function Todo({ todos }: TodoProps) {
         />
       </Box>
     </Flex>
+    </>
   );
 }
 
