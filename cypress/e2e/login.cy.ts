@@ -17,10 +17,6 @@ describe('Login page', () => {
       cy.get('[name="email"]').type('test@example.com');
       cy.get('button[type="submit"]').click();
       cy.contains('Enter password').should('be.visible');
-  
-      cy.get('[name="password"]').type('password');
-      cy.get('button[type="submit"]').click();
-      //cy.contains('Enter a valid email address').should('be.visible');
     });
   
     it('displays an error message for password', () => {
@@ -59,17 +55,16 @@ describe('Login page', () => {
      cy.contains('Enter password')
     })
   
-    // it('shows error message when submitting a form with invalid email', () => {
-    //   cy.get('input[name=email]').type('invalidemail')
-    //   cy.get('form').submit()
-    //   cy.contains('Enter a valid email address')
-    // })
-  
-    // it('logs in successfully when submitting a valid form', () => {
-    //   cy.get('input[name=email]').type('example@example.com')
-    //   cy.get('input[name=password]').type('password')
-    //   cy.get('form').submit()
-    //   cy.url().should('include', '/dashboard')
-    // })
+    it('logs in successfully when submitting a valid form', () => {
+      cy.get('input[name=email]').type('example@example.com')
+      cy.get('input[name=password]').type('password')
+      cy.get('form').submit()
+      cy.url().should('include', '/todo')
+    })
+    
+    it('Redirect to the signup Page', () => {
+      cy.contains(/Sign Up/i).click()
+      cy.url().should('include', '/auth/signup')
+    })
   })
   

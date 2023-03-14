@@ -7,9 +7,10 @@ import {
     Link,
 } from "@chakra-ui/react";
 import InputForm from '../../components/textController/inputForm';
-
+import { useRouter } from 'next/router';
 
 function login() {
+    const router = useRouter();
     const [user,setUser] = useState({
         email:'',
         password:''
@@ -38,6 +39,9 @@ function login() {
             var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
             if(!user.email.match(validRegex)){
                 setErr('Enter a valid email address')
+            }
+            else{
+                router.push('/todo')
             }
         }
         console.log(user);
