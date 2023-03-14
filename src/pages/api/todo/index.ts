@@ -7,9 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         if (req.method === "GET") {
             const filters = JSON.parse(JSON.stringify({
-                dueDate:req.query.dueDate,
-                priority:req.query.priority,
-                done:req.query.isFinished
+                ...(req.query.priority !== undefined) && {priority:req.query.priority},
+                ...(req.query.isFinished !== undefined) && {done:req.query.isFinished},
+                ...(req.query.dueDate !== undefined) && {dueDate:{$lte:req.query.dueDate}}
             }))
             const todoData = await todoCol.find(filters).exec();
             if ( todoData.length === 0 )
