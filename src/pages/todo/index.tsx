@@ -38,51 +38,47 @@ export default function Todo({ todos }: TodoProps) {
 
   return (
     <>
-    <Sidebar username="Puneet" />
-    <Flex
-      flexDirection="column"
-      width="100wh"
-      height="100vh"
-      backgroundColor="gray.200"
-      justifyContent="start"
-      alignItems="center"
-    >
-      <Heading size="lg" as="h3">
-        Todos
-      </Heading>
-      <Box>
-        <NewTask CreateTask={CreateTask} />
-      </Box>
-      {/* <Box>
+      <Sidebar username="Puneet" />
+      <Flex
+        flexDirection="column"
+        width="100wh"
+        height="100vh"
+        backgroundColor="gray.200"
+        justifyContent="start"
+        alignItems="center"
+      >
+        <Heading size="lg" as="h3">
+          Todos
+        </Heading>
+        <Box>
+          <NewTask CreateTask={CreateTask} />
+        </Box>
+        {/* <Box>
         <PriorityDropdown handlePrioritySelection={handlePrioritySelection} />
       </Box> */}
-      <Box mb="2">
-        <TodoList
-          TodoTaskUpdate={TodoTaskUpdate}
-          CheckboxToggle={CheckboxToggle}
-          todos={todos}
-        />
-      </Box>
-    </Flex>
+        <Box mb="2">
+          <TodoList
+            TodoTaskUpdate={TodoTaskUpdate}
+            CheckboxToggle={CheckboxToggle}
+            todos={todos}
+          />
+        </Box>
+      </Flex>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  let dueDate =
-    ctx.query.dueDate ??
-    new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
+  const dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
   let todos: TodoData[] = [];
   try {
-    if (!dueDate) {
+    if (ctx.query.filter === "all") {
       todos = await getTodos();
-      return {
-        props: {
-          todos,
-        },
-      };
+    } else if (ctx.query.filter === "next7") {
+      //do something
+    } else {
+      todos = await getTodosByDueDate(dueDate as string);
     }
-    todos = await getTodosByDueDate(dueDate as string);
     return {
       props: {
         todos,
