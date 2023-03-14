@@ -131,6 +131,11 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
           <Input
             type="date"
             onChange={(e) => {
+              // due date cannot be set to past date
+              if (new Date(e.target.value) < new Date()) {
+                alert("Due date cannot be set to past date");
+                return;
+              }
               setDueDate(e.target.value);
             }}
           />
