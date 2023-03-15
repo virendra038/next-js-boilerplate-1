@@ -10,7 +10,7 @@ export const getTodosByDueDate = async (dueDate: string) => {
   const response = await fetch(
     `http://localhost:3000/api/todo?dueDate=${dueDate}`
   );
-  const todos = await response.json();
+  const todos: TodoData[] = await response.json();
   return todos;
 };
 
