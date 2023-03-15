@@ -46,6 +46,13 @@ export const updateTodo = async (id: string, todo: TodoData) => {
       },
       body: JSON.stringify(todo),
     });
+    await fetch(`${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo),
+    });
   } catch (error) {
     console.log("error from updateTodo service", error);
   }
