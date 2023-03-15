@@ -2,7 +2,7 @@ import type { TodoData } from "@/types/todo.type";
 
 export const getTodos = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo`
+    `${process.env.BASE_URL}:${process.env.PORT}/api/todo`
   );
   const todos = await response.json();
   return todos;
@@ -10,7 +10,7 @@ export const getTodos = async () => {
 
 export const getTodosByDueDate = async (dueDate: string) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo?dueDate=${dueDate}`
+    `${process.env.BASE_URL}:${process.env.PORT}/api/todo?dueDate=${dueDate}`
   );
   const todos: TodoData[] = await response.json();
   return todos;
@@ -18,7 +18,7 @@ export const getTodosByDueDate = async (dueDate: string) => {
 
 export const getTodobyId = async (id: string) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`
+    `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`
   );
   const todo = await response.json();
   return todo;
@@ -26,16 +26,13 @@ export const getTodobyId = async (id: string) => {
 
 export const updateTodo = async (id: string, todo: TodoData) => {
   try {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todo),
-      }
-    );
+    await fetch(`${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo),
+    });
   } catch (error) {
     console.log(error);
   }
@@ -60,7 +57,7 @@ export const markTodoAsDone = async (id: string) => {
 
 export const createTodo = async (todo: TodoData) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo`,
+    `${process.env.BASE_URL}:${process.env.PORT}/api/todo`,
     {
       method: "POST",
       headers: {
@@ -75,7 +72,7 @@ export const createTodo = async (todo: TodoData) => {
 
 export const deleteTodo = async (id: string) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`,
+    `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`,
     {
       method: "DELETE",
     }
