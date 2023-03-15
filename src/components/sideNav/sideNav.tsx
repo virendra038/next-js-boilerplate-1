@@ -7,7 +7,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ username }: SidebarProps) {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState("today");
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);

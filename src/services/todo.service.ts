@@ -10,7 +10,7 @@ export const getTodosByDueDate = async (dueDate: string) => {
   const response = await fetch(
     `http://localhost:3000/api/todo?dueDate=${dueDate}`
   );
-  const todos = await response.json();
+  const todos: TodoData[] = await response.json();
   return todos;
 };
 
@@ -52,7 +52,6 @@ export const markTodoAsDone = async (id: string) => {
   return response;
 };
 
-
 export const createTodo = async (todo: TodoData) => {
   const response = await fetch("http://localhost:3000/api/todo", {
     method: "POST",
@@ -63,7 +62,7 @@ export const createTodo = async (todo: TodoData) => {
   });
   const newTodo = await response.json();
   return newTodo;
-}
+};
 
 export const deleteTodo = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/todo/${id}`, {
@@ -71,4 +70,4 @@ export const deleteTodo = async (id: string) => {
   });
   const deletedTodo = await response.json();
   return deletedTodo;
-}
+};

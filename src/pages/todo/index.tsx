@@ -69,15 +69,39 @@ export default function Todo({ todos }: TodoProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
+  let dueDate: string = "";
   let todos: TodoData[] = [];
   try {
     if (ctx.query.filter === "all") {
       todos = await getTodos();
     } else if (ctx.query.filter === "next7") {
       //do something
-    } else {
+      // add 7 days to current date and then add 5 hr 30 min offset for indian time then set the date in yyyy-mm-dd format
+      dueDate = new Date(Date.now() + 19800000 + 604800000)
+        .toISOString()
+        .split("T")[0];
+      // console.log("7 days? -> ", dueDate);
+      todos = await getTodosByDueDate(dueDate);
+    } else if (
+      ctx.query.filter === "today" ||
+      ctx.query.dueDate !== undefined ||
+      Object.keys(ctx.query).length === 0
+    ) {
+      dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
       todos = await getTodosByDueDate(dueDate as string);
+      let newTodos;
+      if (todos.length > 0 && todos !== undefined && todos !== null) {
+        newTodos = todos.filter((todo) => {
+          if (todo.dueDate.toString().split("T")[0] === dueDate) {
+            return todo;
+          }
+        });
+      }
+      if (newTodos !== undefined && newTodos !== null) {
+        todos = newTodos;
+      }
+    } else {
+      todos = await getTodos();
     }
     return {
       props: {
