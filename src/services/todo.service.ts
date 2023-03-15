@@ -39,7 +39,7 @@ export const getTodobyId = async (id: string) => {
 
 export const updateTodo = async (id: string, todo: TodoData) => {
   try {
-    await fetch(`/api/todo/${id}`, {
+    await fetch(`${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
