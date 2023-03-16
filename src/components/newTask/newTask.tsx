@@ -66,13 +66,6 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       });
     } else {
       setIsError(true);
-      toast({
-        title: "Invalid.",
-        description: "Invalid Data",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-      });
       // setIsDisabled(true);
     }
   };
