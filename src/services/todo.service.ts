@@ -1,32 +1,44 @@
 import type { TodoData } from "@/types/todo.type";
 
 export const getTodos = async () => {
-  const response = await fetch(
-    `${process.env.BASE_URL}:${process.env.PORT}/api/todo`
-  );
-  const todos = await response.json();
-  return todos;
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}:${process.env.PORT}/api/todo`
+    );
+    const todos = await response.json();
+    return todos;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getTodosByDueDate = async (dueDate: string) => {
-  const response = await fetch(
-    `${process.env.BASE_URL}:${process.env.PORT}/api/todo?dueDate=${dueDate}`
-  );
-  const todos: TodoData[] = await response.json();
-  return todos;
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}:${process.env.PORT}/api/todo?dueDate=${dueDate}`
+    );
+    const todos: TodoData[] = await response.json();
+    return todos;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getTodobyId = async (id: string) => {
-  const response = await fetch(
-    `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`
-  );
-  const todo = await response.json();
-  return todo;
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`
+    );
+    const todo = await response.json();
+    return todo;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const updateTodo = async (id: string, todo: TodoData) => {
   try {
-    await fetch(`${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`, {
+    await fetch(`/api/todo/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -39,44 +51,54 @@ export const updateTodo = async (id: string, todo: TodoData) => {
 };
 
 export const updateTodoTask = async (id: string, task: string) => {
-  const findTodo = await getTodobyId(id);
-  await updateTodo(id, {
-    ...findTodo,
-    task,
-  });
+  try {
+    const findTodo = await getTodobyId(id);
+    await updateTodo(id, {
+      ...findTodo,
+      task,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const markTodoAsDone = async (id: string) => {
-  const findTodo = await getTodobyId(id);
-  const done = findTodo.done;
-  await updateTodo(id, {
-    ...findTodo,
-    done: !done,
-  });
+  try {
+    const findTodo = await getTodobyId(id);
+    const done = findTodo.done;
+    await updateTodo(id, {
+      ...findTodo,
+      done: !done,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const createTodo = async (todo: TodoData) => {
-  const response = await fetch(
-    `${process.env.BASE_URL}:${process.env.PORT}/api/todo`,
-    {
+  try {
+    const response = await fetch(`/api/todo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(todo),
-    }
-  );
-  const newTodo = await response.json();
-  return newTodo;
+    });
+    const newTodo = await response.json();
+    return newTodo;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteTodo = async (id: string) => {
-  const response = await fetch(
-    `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`,
-    {
+  try {
+    const response = await fetch(`/api/todo/${id}`, {
       method: "DELETE",
-    }
-  );
-  const deletedTodo = await response.json();
-  return deletedTodo;
+    });
+    const deletedTodo = await response.json();
+    return deletedTodo;
+  } catch (error) {
+    console.log(error);
+  }
 };
