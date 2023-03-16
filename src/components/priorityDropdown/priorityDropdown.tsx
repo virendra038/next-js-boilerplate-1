@@ -10,7 +10,12 @@ export default function PriorityDropdown({ handlePrioritySelection }: Props) {
   };
 
   return (
-    <Select aria-label="Select priority" placeholder="Select priority" onChange={handleChange}>
+    <Select
+      aria-label="Select priority"
+      placeholder="Select priority"
+      onChange={handleChange}
+      defaultValue="High"
+    >
       <option value="Low">Low</option>
       <option value="Medium">Medium</option>
       <option value="High">High</option>
