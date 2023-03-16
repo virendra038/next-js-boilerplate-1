@@ -5,6 +5,7 @@ import {
   Button,
   FormErrorMessage,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import PriorityDropdown from "@/components/priorityDropdown/priorityDropdown";
@@ -18,8 +19,9 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
   const [newTask, setNewTask] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [selectedPriority, setSelectedPriority] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("High");
   const [dueDate, setDueDate] = useState("");
+  const toast = useToast();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedPriority(selectedPriority);
@@ -48,11 +50,47 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       //send post req to add the new task
       CreateTask(task);
       // reload the page
-      window.location.reload();
+      //set timeout for 2 seconds
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      toast({
+        title: "Todo created.",
+        description: "We've created the todo for you.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    } else if (newTask.length! > 0) {
+      toast({
+        title: "Invalid.",
+        description: "Please enter a valid task.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
     } else {
       setIsError(true);
+      toast({
+        title: "Invalid.",
+        description: "Invalid Data",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
       // setIsDisabled(true);
     }
+  };
+
+  const backDateToast = () => {
+    toast({
+      title: "Invalid date.",
+      description: "Due date cannot be set to a past date.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    setDueDate(new Date().toLocaleDateString());
   };
 
   return (
@@ -67,10 +105,11 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
         >
           <Input
             type="date"
+            defaultValue={dueDate}
             onChange={(e) => {
               // due date cannot be set to past date
               if (new Date(e.target.value).getDate() < new Date().getDate()) {
-                alert("Due date cannot be set to past date");
+                backDateToast();
                 return;
               }
               setDueDate(e.target.value);
@@ -92,9 +131,7 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
           </Button>
         </InputGroup>
         <FormErrorMessage>
-          {isError
-            ? "Please enter a task and select a priority and select a date "
-            : ""}
+          {isError ? "Please enter a task " : ""}
         </FormErrorMessage>
       </FormControl>
     </Box>
