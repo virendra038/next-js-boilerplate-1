@@ -13,15 +13,16 @@ export const getTodos = async () => {
 };
 
 export const getTodosByDueDate = async (dueDate: string) => {
+  let todos: TodoData[] = [];
   try {
     const response = await fetch(
       `${process.env.BASE_URL}:${process.env.PORT}/api/todo?dueDate=${dueDate}`
     );
-    const todos: TodoData[] = await response.json();
-    return todos;
+    todos = await response.json();
   } catch (error) {
     console.log(error);
   }
+  return todos;
 };
 
 export const getTodobyId = async (id: string) => {
