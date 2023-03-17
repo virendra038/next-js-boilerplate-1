@@ -37,7 +37,7 @@ describe("test with instance",()=>{
         await handler(request, response);
         const data = response._getData();
         expect(response.statusCode).toEqual(400);
-        expect(data).toStrictEqual({message:"Incomplete Data!"})
+        expect(data).toStrictEqual({message:"todoCollection validation failed: done: Path `done` is required."})
     });
 
     test('Simple POST testing with Complete Data',async () => {
