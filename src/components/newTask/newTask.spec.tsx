@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import NewTask from "@/components/newTask/newTask";
 
 describe("NewTask component", () => {
@@ -18,7 +18,12 @@ describe("NewTask component", () => {
     const input = screen.getByPlaceholderText("+Add a new task");
     const addButton = screen.getByRole("button", { name: "Add" });
     const priorityDropdown = screen.getByLabelText("Select priority");
-    const mockTask = { task: "test task", priority: "Low", dueDate: "", done: false };
+    const mockTask = {
+      task: "test task",
+      priority: "Low",
+      dueDate: "",
+      done: false,
+    };
 
     fireEvent.change(input, { target: { value: "test task" } });
     fireEvent.change(priorityDropdown, { target: { value: "Low" } });
@@ -28,17 +33,17 @@ describe("NewTask component", () => {
     expect(createTaskMock).toHaveBeenCalledWith(mockTask);
   });
 
-//   test("disables add button when input is empty", () => {
-//     render(<NewTask CreateTask={() => {}} />);
-//     const input = screen.getByPlaceholderText("+Add a new task");
-//     const addButton = screen.getByRole("button", { name: "Add" });
+  //   test("disables add button when input is empty", () => {
+  //     render(<NewTask CreateTask={() => {}} />);
+  //     const input = screen.getByPlaceholderText("+Add a new task");
+  //     const addButton = screen.getByRole("button", { name: "Add" });
 
-//     expect(addButton).toBeDisabled();
+  //     expect(addButton).toBeDisabled();
 
-//     fireEvent.change(input, { target: { value: "test task" } });
+  //     fireEvent.change(input, { target: { value: "test task" } });
 
-//     expect(addButton).not.toBeDisabled();
-//   });
+  //     expect(addButton).not.toBeDisabled();
+  //   });
 
   test("displays an error message when input is empty and add button is clicked", () => {
     render(<NewTask CreateTask={() => {}} />);
@@ -46,7 +51,7 @@ describe("NewTask component", () => {
 
     fireEvent.click(addButton);
 
-    const errorMessage = screen.getByText("Please enter a task and select a priority and select a date");
+    const errorMessage = screen.getByText("Please enter a task");
 
     expect(errorMessage).toBeInTheDocument();
   });
@@ -63,8 +68,34 @@ describe("NewTask component", () => {
   //   fireEvent.change(dueDateInput, { target: { value: "2021-01-01" } });
   //   fireEvent.click(addButton);
 
-  //   const errorMessage = screen.getByText("Due date can not be set to a date in the past");
+  //   const errorMessage = screen.getByText(
+  //     "Due date can not be set to a date in the past"
+  //   );
 
   //   expect(errorMessage).toBeInTheDocument();
+  // });
+
+  // test("displays toast message when due date is set to a past date", async () => {
+  //   const { getByLabelText, getByText } = render(
+  //     <NewTask CreateTask={() => {}} />
+  //   );
+  //   const dateInput = getByLabelText("Due Date");
+  //   const addBtn = getByText("Add");
+
+  //   // Set due date to a past date
+  //   fireEvent.change(dateInput, { target: { value: "2023-01-01" } });
+  //   fireEvent.click(addBtn);
+
+  //   // Assert that the toast message is displayed
+  //   expect(
+  //     screen.queryByText("Due date cannot be set to a past date.")
+  //   ).toBeNull(); // toast message should not be displayed
+  //   fireEvent.change(dateInput, { target: { value: "2020-01-01" } }); // set due date to a past date
+  //   fireEvent.click(addBtn); // click Add button again
+  //   await waitFor(() =>
+  //     expect(
+  //       screen.getByText("Due date cannot be set to a past date.")
+  //     ).toBeInTheDocument()
+  //   ); // toast message should be displayed
   // });
 });
