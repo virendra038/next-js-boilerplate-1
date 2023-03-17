@@ -49,6 +49,7 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       setIsDisabled(true);
       //send post req to add the new task
       CreateTask(task);
+      //toast
       toast({
         title: "Todo created.",
         description: "We've created the todo for you.",
