@@ -1,83 +1,12 @@
-// import {
-//   FormControl,
-//   InputGroup,
-//   InputLeftElement,
-//   Input,
-//   InputRightElement,
-//   Button,
-//   FormErrorMessage,
-//   Box,
-// } from "@chakra-ui/react";
-// import { useState } from "react";
-// import { FaPlus } from "react-icons/fa";
-
-// export default function NewTask(CreateTask: any) {
-//   const [newTask, setNewTask] = useState("");
-//   const [isDisabled, setIsDisabled] = useState(true);
-//   const [isError, setIsError] = useState(false);
-
-//   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setNewTask(e.target.value);
-//     if (e.target.value.length > 0) {
-//       setIsDisabled(false);
-//     } else {
-//       setIsDisabled(true);
-//     }
-//   };
-
-//   const handleAddTask = () => {
-//     console.log("new task - ", newTask);
-//     if (newTask.length > 0) {
-//       setIsError(false);
-//       //send post req to add the new task
-//     } else {
-//       setIsError(true);
-//     }
-//   };
-
-//   return (
-//     <Box>
-//       <FormControl isInvalid={isError}>
-//         <InputGroup>
-//           <InputLeftElement
-//             pointerEvents="none"
-//             children={<FaPlus color="gray.300" />}
-//           />
-//           <Input
-//             type="text"
-//             placeholder="Add a new task"
-//             onChange={handleInput}
-//           />
-//           <InputRightElement width="4.5rem">
-//             <Button
-//               h="1.75rem"
-//               size="sm"
-//               onClick={handleAddTask}
-//               disabled={isDisabled}
-//             >
-//               Add
-//             </Button>
-//           </InputRightElement>
-//         </InputGroup>
-//         <FormErrorMessage>
-//           {isError ? "Please enter a task" : ""}
-//         </FormErrorMessage>
-//       </FormControl>
-//     </Box>
-//   );
-// }
-
 import {
   FormControl,
   InputGroup,
-  InputLeftElement,
   Input,
   Button,
   FormErrorMessage,
   Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import PriorityDropdown from "@/components/priorityDropdown/priorityDropdown";
 import { TodoData } from "@/types/todo.type";
 
@@ -118,6 +47,8 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       setIsDisabled(true);
       //send post req to add the new task
       CreateTask(task);
+      // reload the page
+      window.location.reload();
     } else {
       setIsError(true);
       // setIsDisabled(true);
@@ -127,12 +58,19 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
   return (
     <Box>
       <FormControl isInvalid={isError}>
-        <InputGroup style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <InputGroup
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Input
             type="date"
+            defaultValue={new Date().toISOString().slice(0, 10)}
             onChange={(e) => {
               // due date cannot be set to past date
-              if (new Date(e.target.value) < new Date()) {
+              if (new Date(e.target.value).getDate() < new Date().getDate()) {
                 alert("Due date cannot be set to past date");
                 return;
               }
