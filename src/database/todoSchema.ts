@@ -23,6 +23,6 @@ let todoSchema = new mongoose.Schema({
     timestamps:true
 });
 
-let todoCol = mongoose.models.todoCollection || mongoose.model("todoCollection", todoSchema);
+let todoCollection = mongoose.models.todoCollection || mongoose.model("todoCollection", todoSchema);
 
-export default todoCol;
+export default todoCollection;
