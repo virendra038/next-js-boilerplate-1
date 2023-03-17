@@ -106,6 +106,7 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
           <Input
             type="date"
             defaultValue={dueDate}
+            aria-label="Due Date"
             onChange={(e) => {
               // due date cannot be set to past date
               if (new Date(e.target.value).getDate() < new Date().getDate()) {
