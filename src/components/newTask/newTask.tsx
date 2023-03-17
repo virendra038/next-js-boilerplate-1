@@ -105,8 +105,7 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
         >
           <Input
             type="date"
-            defaultValue={dueDate}
-            aria-label="Due Date"
+            defaultValue={new Date().toISOString().slice(0, 10)}
             onChange={(e) => {
               // due date cannot be set to past date
               if (new Date(e.target.value).getDate() < new Date().getDate()) {
