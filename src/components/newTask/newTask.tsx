@@ -49,11 +49,6 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       setIsDisabled(true);
       //send post req to add the new task
       CreateTask(task);
-      // reload the page
-      //set timeout for 2 seconds
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
       toast({
         title: "Todo created.",
         description: "We've created the todo for you.",
