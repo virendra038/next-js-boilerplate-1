@@ -7,23 +7,25 @@ import {
     Link,
 } from "@chakra-ui/react";
 import InputForm from '../../components/textController/inputForm';
+import { ChangeEvent } from 'react';
+import { useRouter } from 'next/router';
 
-
-function login() {
+function Login() {
+    const router = useRouter()
     const [user,setUser] = useState({
         email:'',
         password:''
     })
     const [err,setErr] = useState('')
 
-   const onChangeInput = (e:any) =>{
+   const onChangeInput = (e:ChangeEvent<HTMLFormElement>) =>{
     const {name,value} = e.target;
     setUser({...user,[name]:value})
     setErr('')
    }
 
     
-    const onSubmit = (e:any)=>{
+    const onSubmit = (e:ChangeEvent<HTMLInputElement>)=>{
         e.preventDefault()
         if(user.email ==='' && user.password ===''){
             setErr("Enter email and password");
@@ -47,7 +49,7 @@ function login() {
             flexDirection="column"
             width="100wh"
             height="100vh"
-            backgroundColor="gray.200"
+            backgroundColor= "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)"
             justifyContent="center"
             alignItems="center"
         >
@@ -64,7 +66,9 @@ function login() {
             </Stack>
             <Box>
                 New to us?{" "}
-                <Link color="teal.500" href='/auth/signup'>
+                <Link color="teal.500" onClick={()=>{
+                    router.push('/auth/signup',undefined,{shallow:true})
+                }}>
                     Sign Up
                 </Link>
             </Box>
@@ -73,4 +77,4 @@ function login() {
 
 }
 
-export default login
+export default Login

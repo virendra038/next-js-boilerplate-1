@@ -1,30 +1,31 @@
 import React from 'react'
 import { useState } from "react";
-import SignInWithGoogle from '../../components/buttons/signInWithGoogle'
 import InputForm from '../../components/textController/inputForm';
 import {
     Flex,
-    Heading,
     Stack,
     Box,
     Link,
 } from "@chakra-ui/react";
+import { ChangeEvent } from 'react';
+import { useRouter } from 'next/router';
 
-function signUp({login,setIsLogin}:any) {
+function SignUp() {
+    const router = useRouter();
     const [user,setUser] = useState({
         email:'',
         password:''
     })
     const [err,setErr] = useState('')
 
-   const onChangeInput = (e:any) =>{
+   const onChangeInput = (e:ChangeEvent<HTMLFormElement>) =>{
     const {name,value} = e.target;
     setUser({...user,[name]:value})
     setErr('')
    }
 
     
-    const onSubmit = (e:any)=>{
+    const onSubmit = (e:ChangeEvent<HTMLFormElement>)=>{
         e.preventDefault();
         if(user.email ==='' && user.password ===''){
             setErr("Enter email and password");
@@ -46,8 +47,8 @@ function signUp({login,setIsLogin}:any) {
         <Flex
             flexDirection="column"
             width="100wh"
-            height="100vh"
-            backgroundColor="gray.200"
+            height="100vh" 
+            backgroundColor= "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)"
             justifyContent="center"
             alignItems="center"
         >
@@ -58,13 +59,17 @@ function signUp({login,setIsLogin}:any) {
                 alignItems="center"
             >
 
-                <Box minW={{ base: "90%", md: "468px" }}>
+                <Box minW={{ base: "90%", md: "468px" }}
+                box-shadow= "rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px">
                 <InputForm onChangeInput={onChangeInput}  err={err} onSubmit={onSubmit} user={user} login={false}/>
                 </Box>
             </Stack>
             <Box>
                 Already have an account?{" "}
-                <Link color="teal.500" href='/auth/login'>
+                <Link color="teal.500" onClick={()=>{
+                    router.push('/auth/login',undefined
+                    ,{shallow:true  })
+                }}>
                     Login
                 </Link>
             </Box>
@@ -73,4 +78,4 @@ function signUp({login,setIsLogin}:any) {
 
 }
 
-export default signUp
+export default SignUp
