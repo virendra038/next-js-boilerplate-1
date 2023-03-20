@@ -29,7 +29,6 @@ let todoSchema = new mongoose.Schema(
       default: Date.now,
       select: false,
     },
-    __v: { type: Number, select: false },
   },
   {
     timestamps: true,

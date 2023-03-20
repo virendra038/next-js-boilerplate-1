@@ -1,6 +1,6 @@
 import connectDB from "@/database/db";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getAllTodoData, postTodoDate } from "@/services/api.service";
+import { getAllTodoData, postTodoData } from "@/services/api.service";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB();
@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 break;
             
             case "POST": 
-                await postTodoDate(req,res)
+                await postTodoData(req,res)
                 break;
         
             default:
