@@ -18,6 +18,17 @@ let todoSchema = new mongoose.Schema({
         type: Boolean,
         required:true
     },
+    createdAt: {
+        type: Date, 
+        default: Date.now, 
+        select: false 
+    },
+    updatedAt: { 
+        type: Date, 
+        default: Date.now, 
+        select: false 
+    },
+    __v: { type: Number, select: false }
 },
 {
     timestamps:true
