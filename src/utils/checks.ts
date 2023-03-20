@@ -21,3 +21,19 @@ export const isIdValid =  async (id: string) => {
     }
     return false;
 }
+
+// type validationCheckType = ({ task: string|undefined; priority: string|undefined; dueDate: string|undefined; done: boolean|undefined}) => any
+export const validationChecks = ({ task, priority, dueDate, done}) =>{
+    let errorMessage: string = '';
+    if ( task === undefined )
+        errorMessage += 'task is not provided, ';
+    if ( dueDate === undefined )
+        errorMessage += 'dueDate is not provided, ';
+    if ( priority === undefined )
+        errorMessage += 'priority is not provided, ';
+    if ( done === undefined )
+        errorMessage += 'done is not provided, ';
+    if ( dueDate && isPastDate(dueDate) )
+        errorMessage += 'due date cannot be past date, '
+    return errorMessage;
+}

@@ -1,6 +1,6 @@
 import todoCollection from "@/database/todoSchema";
 import { NextApiRequest, NextApiResponse } from "next";
-import { isPastDate } from "@/utils/checks";
+import { validationChecks } from "@/utils/checks";
 import mongoose from "mongoose";
 
 export const getAllTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,9 +18,9 @@ export const getAllTodoData = async (req: NextApiRequest, res: NextApiResponse) 
 export const postTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
     const { task, priority, dueDate, done} = req.body;
 
-    // checks for feasibility of data
-    if ( dueDate && isPastDate(dueDate) ){
-        res.status(400).send({message:"Due date cannot be past date!"})
+    let validationErrors = validationChecks({ task, priority, dueDate, done});
+    if ( validationErrors !== '' ){
+        res.status(400).send({message:"Fix following issues: "+validationErrors})
         return;
     }
 
@@ -31,8 +31,9 @@ export const postTodoData = async (req: NextApiRequest, res: NextApiResponse) =>
     }
 
     const todoData = new todoCollection({task, priority, dueDate , done})
-    let saveResponse = await todoData.save();
-    res.status(201).send(saveResponse)
+    const saveResponse = await todoData.save();
+    const dataResponse = await todoCollection.findById({_id:saveResponse._id})
+    res.status(201).send(dataResponse)
 }
 
 export const getTodoById = async (req: NextApiRequest, res: NextApiResponse, _id: mongoose.Types.ObjectId )=>{
