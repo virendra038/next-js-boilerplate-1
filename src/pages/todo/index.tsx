@@ -147,7 +147,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     } else {
       todos = await getTodos(baseUrl, { dueDate: "" });
-      console.log("all", todos);
     }
     return {
       props: {
