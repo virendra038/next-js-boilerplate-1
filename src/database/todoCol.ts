@@ -1,28 +1,30 @@
 import mongoose from "mongoose";
 
-let todoSchema = new mongoose.Schema({
+let todoSchema = new mongoose.Schema(
+  {
     task: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     priority: {
-        type: String,
-        enum : ['High','Medium',"Low"],
-        required: true,
+      type: String,
+      enum: ["High", "Medium", "Low"],
+      required: true,
     },
     dueDate: {
-        type: Date,
-        required: true, 
+      type: Date,
+      required: true,
     },
     done: {
-        type: Boolean,
-        required:true
+      type: Boolean,
+      required: true,
     },
-},
-{
-    timestamps:true
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-let todoCol = mongoose.models.todoCollection || mongoose.model("todoCollection", todoSchema);
+let todoCol = mongoose.models.todo || mongoose.model("todo", todoSchema);
 
 export default todoCol;

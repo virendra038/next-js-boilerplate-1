@@ -1,17 +1,35 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 interface SidebarProps {
   username: string;
+  activeFilter: string;
+  handleRefresh: (filter: string) => void;
+  setActiveFilter: (filter: string) => void;
 }
 
-export default function Sidebar({ username }: SidebarProps) {
-  const [activeFilter, setActiveFilter] = useState("today");
-
+export default function Sidebar({
+  username,
+  activeFilter,
+  handleRefresh,
+  setActiveFilter,
+}: SidebarProps) {
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
+    handleRefresh(filter);
   };
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const filter = router.query.filter;
+    if (filter) {
+      setActiveFilter(filter as string);
+      handleRefresh(filter as string);
+    }
+  }, [router.query.filter]);
 
   return (
     <Box
@@ -30,18 +48,28 @@ export default function Sidebar({ username }: SidebarProps) {
         <Text>{username}</Text>
       </Flex>
       <Box mb="2rem">
-        <Link href="/todo?filter=all">
-          <Button
+        <Link
+          // href="/todo?filter=all"
+          variant={activeFilter === "all" ? "solid" : "ghost"}
+          colorScheme={activeFilter === "all" ? "blue" : undefined}
+          onClick={() => {
+            handleFilterClick("all");
+            router.push("/todo?filter=all", undefined, { shallow: true });
+            router.replace(router.asPath);
+          }}
+          w="100%"
+        >
+          All Tasks
+          {/* <Button
             variant={activeFilter === "all" ? "solid" : "ghost"}
             colorScheme={activeFilter === "all" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("all");
               handleFilterClick("all");
             }}
             w="100%"
           >
             All tasks
-          </Button>
+          </Button> */}
         </Link>
         <Link href="/todo?filter=today">
           <Button

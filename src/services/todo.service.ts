@@ -1,14 +1,27 @@
 import type { TodoData } from "@/types/todo.type";
+import axios from "axios";
 
-export const getTodos = async () => {
+interface queryParamsType {
+  dueDate?: string;
+}
+
+export const getTodos = async (
+  baseUrl: String,
+  queryParams: queryParamsType
+) => {
   try {
-    const response = await fetch(
-      `${process.env.BASE_URL}:${process.env.PORT}/api/todo`
-    );
-    const todos = await response.json();
-    return todos;
+    // let todos: TodoData[] = [];
+    // console.log(baseUrl);
+    // console.log(queryParams);
+    const res = await axios.get(baseUrl + "/api/todo", {
+      params: queryParams,
+    });
+    // todos = res.data;
+    // if (todos != undefined) return todos;
+    // return todos;
+    return res.data;
   } catch (error) {
-    console.log("error from getTodos service", error);
+    console.log(error);
   }
 };
 
@@ -16,7 +29,7 @@ export const getTodosByDueDate = async (dueDate: string) => {
   let todos: TodoData[] = [];
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}:${process.env.PORT}/api/todo?dueDate=${dueDate}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo?dueDate=${dueDate}`
     );
     todos = await response.json();
   } catch (error) {
@@ -28,7 +41,7 @@ export const getTodosByDueDate = async (dueDate: string) => {
 export const getTodobyId = async (id: string) => {
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`
     );
     const todo = await response.json();
     return todo;
@@ -39,13 +52,16 @@ export const getTodobyId = async (id: string) => {
 
 export const updateTodo = async (id: string, todo: TodoData) => {
   try {
-    await fetch(`${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todo),
-    });
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todo),
+      }
+    );
   } catch (error) {
     console.log("error from updateTodo service", error);
   }
@@ -76,19 +92,38 @@ export const markTodoAsDone = async (id: string) => {
   }
 };
 
-export const createTodo = async (todo: TodoData) => {
+// export const getTodos = async (
+//   baseUrl: String,
+//   queryParams: queryParamsType
+// ) => {
+//   try {
+//     let todos: TodoData[] = [];
+//     const res = await axios.get(baseUrl + "/api/todo", {
+//       params: queryParams,
+//     });
+//     todos = res.data;
+//     if (todos != undefined) return todos;
+//     return [];
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const createTodo = async (baseUrl: String, todo: TodoData) => {
   try {
-    const response = await fetch(
-      `${process.env.BASE_URL}:${process.env.PORT}/api/todo`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todo),
-      }
-    );
-    const newTodo = await response.json();
+    console.log(baseUrl);
+    const res = await axios.post(baseUrl + "/api/todo", todo, {
+      headers: { "Content-Type": "application/json" },
+    });
+    // const response = await fetch(baseUrl + "/api/todo", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(todo),
+    // });
+    // const newTodo = await response.json();
+    const newTodo = await res.data;
     return newTodo;
   } catch (error) {
     console.log("error from createTodo service", error);
@@ -98,7 +133,7 @@ export const createTodo = async (todo: TodoData) => {
 export const deleteTodo = async (id: string) => {
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}:${process.env.PORT}/api/todo/${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_PORT}/api/todo/${id}`,
       {
         method: "DELETE",
       }
