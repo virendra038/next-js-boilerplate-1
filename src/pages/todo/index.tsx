@@ -1,44 +1,65 @@
 import TodoList from "@/components/Todo/TodoList";
-import {
-  createTodo,
-  getTodos,
-  getTodosByDueDate,
-  updateTodoTask,
-} from "@/services/todo.service";
+import { createTodo, getTodos, updateTodoTask } from "@/services/todo.service";
 import type { TodoData } from "@/types/todo.type";
 import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import NewTask from "@/components/newTask/newTask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/sideNav/sideNav";
+import { useRouter } from "next/router";
+import GetBaseUrl from "@/utils/baseUrl";
 
 interface TodoProps {
   todos: TodoData[];
 }
 
 export async function CheckboxToggle(id: string) {
-  await markTodoAsDone(id);
+  await markTodoAsDone("", id);
 }
 
 export async function TodoTaskUpdate(id: string, data: string) {
-  await updateTodoTask(id, data);
+  await updateTodoTask("", id, data);
 }
 
 export async function CreateTask(task: TodoData) {
-  const newTask = await createTodo(task);
+  const newTask = await createTodo("", task);
 }
 
-export default function Todo({ todos }: TodoProps) {
-  const [selectedPriority, setSelectedPriority] = useState("");
+export default function Todo({ todos: initialTodos }: TodoProps) {
+  // const [selectedPriority, setSelectedPriority] = useState("");
+  const [todos, setTodos] = useState(initialTodos);
+  const [activeFilter, setActiveFilter] = useState("today");
+  // const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const handlePrioritySelection = (selectedPriority: string) => {
-    setSelectedPriority(selectedPriority);
+  const router = useRouter();
+
+  // const handleRefresh = (filter: string) => {
+  const handleRefresh = () => {
+    // setIsRefreshing(true);
+    // setActiveFilter(filter);
+    router.replace(router.asPath);
   };
+
+  useEffect(() => {
+    // setIsRefreshing(false);
+    router.push(`/todo?filter=${activeFilter}`);
+    handleRefresh();
+  }, [activeFilter]);
+
+  // const handlePrioritySelection = (selectedPriority: string) => {
+  //   setSelectedPriority(selectedPriority);
+  // };
 
   return (
     <>
-      <Sidebar username="Puneet" />
+      <Sidebar
+        username="Puneet"
+        activeFilter={activeFilter}
+        handleRefresh={handleRefresh}
+        setActiveFilter={setActiveFilter}
+        router={router}
+      />
       <Flex
         flexDirection="column"
         width="100wh"
@@ -51,7 +72,7 @@ export default function Todo({ todos }: TodoProps) {
           Todos
         </Heading>
         <Box>
-          <NewTask CreateTask={CreateTask} />
+          <NewTask CreateTask={CreateTask} handleRefresh={handleRefresh} />
         </Box>
         {/* <Box>
         <PriorityDropdown handlePrioritySelection={handlePrioritySelection} />
@@ -61,6 +82,8 @@ export default function Todo({ todos }: TodoProps) {
             TodoTaskUpdate={TodoTaskUpdate}
             CheckboxToggle={CheckboxToggle}
             todos={todos}
+            setTodos={setTodos}
+            handleRefresh={handleRefresh}
           />
         </Box>
       </Flex>
@@ -71,37 +94,28 @@ export default function Todo({ todos }: TodoProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let dueDate: string = "";
   let todos: TodoData[] = [];
+
+  const baseUrl = GetBaseUrl(ctx) as string;
   try {
     if (ctx.query.filter === "all") {
-      todos = await getTodos();
+      todos = await getTodos(baseUrl, { dueDate: "" });
     } else if (ctx.query.filter === "next7") {
       //do something
       // add 7 days to current date and then add 5 hr 30 min offset for indian time then set the date in yyyy-mm-dd format
       dueDate = new Date(Date.now() + 19800000 + 604800000)
         .toISOString()
         .split("T")[0];
-      // console.log("7 days? -> ", dueDate);
-      todos = await getTodosByDueDate(dueDate);
+      todos = await getTodos(baseUrl, { dueDate: dueDate });
     } else if (
       ctx.query.filter === "today" ||
       ctx.query.dueDate !== undefined ||
       Object.keys(ctx.query).length === 0
     ) {
       dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
-      todos = await getTodosByDueDate(dueDate as string);
-      let newTodos;
-      if (todos.length > 0 && todos !== undefined && todos !== null) {
-        newTodos = todos.filter((todo) => {
-          if (todo.dueDate.toString().split("T")[0] === dueDate) {
-            return todo;
-          }
-        });
-      }
-      if (newTodos !== undefined && newTodos !== null) {
-        todos = newTodos;
-      }
+      // todos = await getTodos(baseUrl, { dueDate: dueDate });
+      todos = await getTodos(baseUrl, { dueDate: dueDate });
     } else {
-      todos = await getTodos();
+      todos = await getTodos(baseUrl, { dueDate: "" });
     }
     return {
       props: {

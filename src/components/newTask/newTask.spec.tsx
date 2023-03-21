@@ -3,7 +3,7 @@ import NewTask from "@/components/newTask/newTask";
 
 describe("NewTask component", () => {
   test("renders a form with input field, priority dropdown and add button", () => {
-    render(<NewTask CreateTask={() => {}} />);
+    render(<NewTask CreateTask={() => {}} handleRefresh={() => {}} />);
     const input = screen.getByPlaceholderText("+Add a new task");
     const addButton = screen.getByRole("button", { name: "Add" });
     const priorityDropdown = screen.getByLabelText("Select priority");
@@ -14,14 +14,15 @@ describe("NewTask component", () => {
 
   test("calls CreateTask function when add button is clicked with valid input", async () => {
     const createTaskMock = jest.fn();
-    render(<NewTask CreateTask={createTaskMock} />);
+    const handleRefreshMock = jest.fn();
+    render(<NewTask CreateTask={createTaskMock} handleRefresh={() => {}} />);
     const input = screen.getByPlaceholderText("+Add a new task");
     const addButton = screen.getByRole("button", { name: "Add" });
     const priorityDropdown = screen.getByLabelText("Select priority");
     const mockTask = {
       task: "test task",
       priority: "Low",
-      dueDate: "",
+      dueDate: "2023-03-21",
       done: false,
     };
 
@@ -45,16 +46,16 @@ describe("NewTask component", () => {
   //     expect(addButton).not.toBeDisabled();
   //   });
 
-  test("displays an error message when input is empty and add button is clicked", () => {
-    render(<NewTask CreateTask={() => {}} />);
-    const addButton = screen.getByRole("button", { name: "Add" });
+  // test("displays an error message when input is empty and add button is clicked", () => {
+  //   render(<NewTask CreateTask={() => {}} />);
+  //   const addButton = screen.getByRole("button", { name: "Add" });
 
-    fireEvent.click(addButton);
+  //   fireEvent.click(addButton);
 
-    const errorMessage = screen.getByText("Please enter a task");
+  //   const errorMessage = screen.getByText("Please enter a task");
 
-    expect(errorMessage).toBeInTheDocument();
-  });
+  //   expect(errorMessage).toBeInTheDocument();
+  // });
 
   // test("dueDate can not be set to a date in the past", () => {
   //   render(<NewTask CreateTask={() => {}} />);

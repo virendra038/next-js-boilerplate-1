@@ -7,7 +7,7 @@ let todoSchema = new mongoose.Schema({
     },
     priority: {
         type: String,
-        enum : ['High','Medium',"Low"],
+        enum : ['High','Medium','Low'],
         required: true,
     },
     dueDate: {

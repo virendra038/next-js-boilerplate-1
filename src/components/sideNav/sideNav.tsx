@@ -1,17 +1,40 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import type { NextRouter } from "next/router";
 
 interface SidebarProps {
   username: string;
+  activeFilter: string;
+  // handleRefresh: (filter: string) => void;
+  handleRefresh: () => void;
+  setActiveFilter: (filter: string) => void;
+  router: NextRouter;
 }
 
-export default function Sidebar({ username }: SidebarProps) {
-  const [activeFilter, setActiveFilter] = useState("today");
-
+export default function Sidebar({
+  username,
+  activeFilter,
+  handleRefresh,
+  setActiveFilter,
+  router,
+}: SidebarProps) {
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
+    // router.push(`/todo?filter=${filter}`);
+    // handleRefresh();
   };
+
+  // const router = useRouter();
+
+  useEffect(() => {
+    const filter = router.query.filter;
+    if (filter) {
+      setActiveFilter(filter as string);
+      // handleRefresh();
+      // router.replace(router.asPath);
+    }
+  }, [router.query.filter]);
 
   return (
     <Box
@@ -35,20 +58,20 @@ export default function Sidebar({ username }: SidebarProps) {
             variant={activeFilter === "all" ? "solid" : "ghost"}
             colorScheme={activeFilter === "all" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("all");
               handleFilterClick("all");
             }}
+            mt="0.5rem"
             w="100%"
           >
-            All tasks
+            All Tasks
           </Button>
         </Link>
+
         <Link href="/todo?filter=today">
           <Button
             variant={activeFilter === "today" ? "solid" : "ghost"}
             colorScheme={activeFilter === "today" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("today");
               handleFilterClick("today");
             }}
             mt="0.5rem"
@@ -62,7 +85,6 @@ export default function Sidebar({ username }: SidebarProps) {
             variant={activeFilter === "next7" ? "solid" : "ghost"}
             colorScheme={activeFilter === "next7" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("next7");
               handleFilterClick("next7");
             }}
             mt="0.5rem"

@@ -18,6 +18,8 @@ interface TodosProps {
   todos: TodoData[];
   CheckboxToggle: (id: string) => void;
   TodoTaskUpdate: (id: string, data: string) => void;
+  setTodos: (todos: TodoData[]) => void;
+  handleRefresh: () => void;
 }
 
 const handleTodoDoubleClick = (
@@ -29,11 +31,13 @@ const handleTodoDoubleClick = (
 };
 
 export default function TodoList({
-  todos: initialTodos,
+  todos,
   CheckboxToggle,
   TodoTaskUpdate,
+  setTodos,
+  handleRefresh,
 }: TodosProps) {
-  const [todos, setTodos] = useState<TodoData[]>(initialTodos);
+  // const [todos, setTodos] = useState<TodoData[]>(initialTodos);
   const toast = useToast();
 
   const handleCheckboxClick = async (id: string) => {
@@ -46,22 +50,48 @@ export default function TodoList({
         }
         return todo;
       });
+      setTodos(updatedTodos);
       toast({
         title: "Todo updated.",
         description: "We've updated the todo for you.",
         status: "success",
         duration: 3000,
         isClosable: true,
+        position: "top-right",
       });
-      setTodos(updatedTodos);
+      handleRefresh();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleInputUpdate = async (id: string, data: string) => {
+  const handleInputUpdate = async (id: string, data: string, task: string) => {
     //send put req to update the task property of the todo
     try {
+      // BugFix checking if the input is empty, if so, show a toast
+      if (data === "") {
+        toast({
+          title: "Task cannot be empty.",
+          description: "Please enter a valid task.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        handleRefresh();
+        return;
+      } else if (data === task) {
+        toast({
+          title: "Task is the same.",
+          description: "Please enter a valid task.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        handleRefresh();
+        return;
+      }
       TodoTaskUpdate(id, data);
       const updatedTodos = todos.map((todo) => {
         if (todo._id!.toString() === id) {
@@ -76,7 +106,9 @@ export default function TodoList({
         status: "success",
         duration: 3000,
         isClosable: true,
+        position: "top-right",
       });
+      handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +137,7 @@ export default function TodoList({
                         handleTodoDoubleClick(e);
                       }}
                       onSubmit={(data) =>
-                        handleInputUpdate(todo._id!.toString(), data)
+                        handleInputUpdate(todo._id!.toString(), data, todo.task)
                       }
                     >
                       <EditablePreview

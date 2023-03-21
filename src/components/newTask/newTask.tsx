@@ -1,26 +1,34 @@
 import {
-  FormControl,
-  InputGroup,
   Input,
   Button,
-  FormErrorMessage,
   Box,
   useToast,
+  Card,
+  CardHeader,
+  CardBody,
+  Stack,
+  StackDivider,
+  Heading,
 } from "@chakra-ui/react";
+import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import PriorityDropdown from "@/components/priorityDropdown/priorityDropdown";
 import { TodoData } from "@/types/todo.type";
 
 interface NewTaskProps {
   CreateTask: (task: TodoData) => void;
+  // handleRefresh: (filter: string) => void;
+  handleRefresh: () => void;
 }
 
-export default function NewTask({ CreateTask }: NewTaskProps) {
+export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
   const [newTask, setNewTask] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [isError, setIsError] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState("High");
-  const [dueDate, setDueDate] = useState("");
+  const [dueDate, setDueDate] = useState(
+    new Date(Date.now() + 19800000).toISOString().slice(0, 10)
+  ); // ESY-1636 due date was not set correctly so fixed it
   const toast = useToast();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,25 +57,25 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       setIsDisabled(true);
       //send post req to add the new task
       CreateTask(task);
-      // reload the page
-      //set timeout for 2 seconds
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      //toast
       toast({
         title: "Todo created.",
         description: "We've created the todo for you.",
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
-    } else if (newTask.length! > 0) {
+      handleRefresh();
+    } else if (newTask.length > 0) {
+      setIsError(true);
       toast({
         title: "Invalid.",
         description: "Please enter a valid task.",
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
     } else {
       setIsError(true);
@@ -77,6 +85,7 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
       // setIsDisabled(true);
     }
@@ -89,51 +98,74 @@ export default function NewTask({ CreateTask }: NewTaskProps) {
       status: "error",
       duration: 3000,
       isClosable: true,
+      position: "top-right",
     });
     setDueDate(new Date().toLocaleDateString());
   };
 
   return (
-    <Box>
-      <FormControl isInvalid={isError}>
-        <InputGroup
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+    <Card align="center" variant="elevated" size="sm">
+      <CardHeader>
+        <Heading size="md">Add Todo</Heading>
+      </CardHeader>
+      <CardBody>
+        <Stack
+          divider={<StackDivider />}
+          spacing="4"
+          direction="row"
+          align="flex-end"
         >
-          <Input
-            type="date"
-            defaultValue={new Date().toISOString().slice(0, 10)}
-            onChange={(e) => {
-              // due date cannot be set to past date
-              if (new Date(e.target.value).getDate() < new Date().getDate()) {
-                backDateToast();
-                return;
-              }
-              setDueDate(e.target.value);
-            }}
-          />
-          <PriorityDropdown handlePrioritySelection={handlePrioritySelection} />
-          <Input
-            type="text"
-            placeholder="+Add a new task"
-            onChange={handleInput}
-          />
-          <Button
-            minW="4.5rem"
-            h="1.75rem"
-            // size="sm"
-            onClick={handleAddTask}
-          >
-            Add
-          </Button>
-        </InputGroup>
-        <FormErrorMessage>
-          {isError ? "Please enter a task " : ""}
-        </FormErrorMessage>
-      </FormControl>
-    </Box>
+          <Box>
+            <Heading size="xs" textTransform="uppercase">
+              Select date
+            </Heading>
+            <Input
+              type="date"
+              // defaultValue={new Date().toISOString().slice(0, 10)}
+              defaultValue={dueDate}
+              onChange={(e) => {
+                // due date cannot be set to past date
+                if (new Date(e.target.value).getDate() < new Date().getDate()) {
+                  backDateToast();
+                  return;
+                }
+                setDueDate(e.target.value);
+              }}
+            />
+          </Box>
+          <Box>
+            <Heading size="xs" textTransform="uppercase">
+              Select Priority
+            </Heading>
+            <PriorityDropdown
+              handlePrioritySelection={handlePrioritySelection}
+            />
+          </Box>
+          <Box>
+            <Heading size="xs" textTransform="uppercase">
+              Enter Task
+            </Heading>
+            <Input
+              type="text"
+              placeholder="+Add a new task"
+              onChange={handleInput}
+            />
+          </Box>
+          <Box>
+            <Button
+              colorScheme="blue"
+              minW="4.5rem"
+              w="7rem"
+              h="2.25rem"
+              // size="sm"
+              onClick={handleAddTask}
+              leftIcon={<FaPlus />}
+            >
+              Add
+            </Button>
+          </Box>
+        </Stack>
+      </CardBody>
+    </Card>
   );
 }
