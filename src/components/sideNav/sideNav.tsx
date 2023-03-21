@@ -1,13 +1,15 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
-import { useRouter } from "next/router";
+import type { NextRouter } from "next/router";
 
 interface SidebarProps {
   username: string;
   activeFilter: string;
-  handleRefresh: (filter: string) => void;
+  // handleRefresh: (filter: string) => void;
+  handleRefresh: () => void;
   setActiveFilter: (filter: string) => void;
+  router: NextRouter;
 }
 
 export default function Sidebar({
@@ -15,19 +17,22 @@ export default function Sidebar({
   activeFilter,
   handleRefresh,
   setActiveFilter,
+  router,
 }: SidebarProps) {
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
-    handleRefresh(filter);
+    // handleRefresh();
+    // router.replace(router.asPath);
   };
 
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const filter = router.query.filter;
     if (filter) {
       setActiveFilter(filter as string);
-      handleRefresh(filter as string);
+      handleRefresh();
+      router.replace(router.asPath);
     }
   }, [router.query.filter]);
 
@@ -50,12 +55,10 @@ export default function Sidebar({
       <Box mb="2rem">
         <Link
           // href="/todo?filter=all"
-          variant={activeFilter === "all" ? "solid" : "ghost"}
-          colorScheme={activeFilter === "all" ? "blue" : undefined}
           onClick={() => {
             handleFilterClick("all");
-            router.push("/todo?filter=all", undefined, { shallow: true });
-            router.replace(router.asPath);
+            // router.push("/todo?filter=all", undefined, { shallow: true });
+            // router.replace(router.asPath);
           }}
           w="100%"
         >
