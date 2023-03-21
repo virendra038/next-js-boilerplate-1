@@ -5,7 +5,7 @@ import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import NewTask from "@/components/newTask/newTask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/sideNav/sideNav";
 import { useRouter } from "next/router";
 import GetBaseUrl from "@/utils/baseUrl";
@@ -41,9 +41,11 @@ export default function Todo({ todos: initialTodos }: TodoProps) {
     router.replace(router.asPath);
   };
 
-  // useEffect(() => {
-  //   setIsRefreshing(false);
-  // }, [todos]);
+  useEffect(() => {
+    // setIsRefreshing(false);
+    router.push(`/todo?filter=${activeFilter}`);
+    handleRefresh();
+  }, [activeFilter]);
 
   // const handlePrioritySelection = (selectedPriority: string) => {
   //   setSelectedPriority(selectedPriority);
@@ -110,18 +112,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       Object.keys(ctx.query).length === 0
     ) {
       dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
+      // todos = await getTodos(baseUrl, { dueDate: dueDate });
       todos = await getTodos(baseUrl, { dueDate: dueDate });
-      let newTodos;
-      if (todos.length > 0 && todos !== undefined && todos !== null) {
-        newTodos = todos.filter((todo) => {
-          if (todo.dueDate.toString().split("T")[0] === dueDate) {
-            return todo;
-          }
-        });
-      }
-      if (newTodos !== undefined && newTodos !== null) {
-        todos = newTodos;
-      }
     } else {
       todos = await getTodos(baseUrl, { dueDate: "" });
     }

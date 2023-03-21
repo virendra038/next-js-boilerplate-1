@@ -21,8 +21,8 @@ export default function Sidebar({
 }: SidebarProps) {
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
+    // router.push(`/todo?filter=${filter}`);
     // handleRefresh();
-    // router.replace(router.asPath);
   };
 
   // const router = useRouter();
@@ -31,8 +31,8 @@ export default function Sidebar({
     const filter = router.query.filter;
     if (filter) {
       setActiveFilter(filter as string);
-      handleRefresh();
-      router.replace(router.asPath);
+      // handleRefresh();
+      // router.replace(router.asPath);
     }
   }, [router.query.filter]);
 
@@ -53,33 +53,25 @@ export default function Sidebar({
         <Text>{username}</Text>
       </Flex>
       <Box mb="2rem">
-        <Link
-          // href="/todo?filter=all"
-          onClick={() => {
-            handleFilterClick("all");
-            // router.push("/todo?filter=all", undefined, { shallow: true });
-            // router.replace(router.asPath);
-          }}
-          w="100%"
-        >
-          All Tasks
-          {/* <Button
+        <Link href="/todo?filter=all">
+          <Button
             variant={activeFilter === "all" ? "solid" : "ghost"}
             colorScheme={activeFilter === "all" ? "blue" : undefined}
             onClick={() => {
               handleFilterClick("all");
             }}
+            mt="0.5rem"
             w="100%"
           >
-            All tasks
-          </Button> */}
+            All Tasks
+          </Button>
         </Link>
+
         <Link href="/todo?filter=today">
           <Button
             variant={activeFilter === "today" ? "solid" : "ghost"}
             colorScheme={activeFilter === "today" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("today");
               handleFilterClick("today");
             }}
             mt="0.5rem"
@@ -93,7 +85,6 @@ export default function Sidebar({
             variant={activeFilter === "next7" ? "solid" : "ghost"}
             colorScheme={activeFilter === "next7" ? "blue" : undefined}
             onClick={() => {
-              // setActiveFilter("next7");
               handleFilterClick("next7");
             }}
             mt="0.5rem"
