@@ -30,12 +30,12 @@ export const getTodobyId = async (baseUrl: string, id: string) => {
 };
 
 export const updateTodo = async (
-  baseUrl: string,
+  baseurl: string,
   id: string,
   todo: TodoData
 ) => {
   try {
-    await axios.put(baseUrl + `/api/todo/${id}`, todo, {
+    await axios.put(baseurl + `/api/todo/${id}`, todo, {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
