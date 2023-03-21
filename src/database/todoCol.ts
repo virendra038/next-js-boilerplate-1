@@ -25,6 +25,8 @@ let todoSchema = new mongoose.Schema(
   }
 );
 
-let todoCol = mongoose.models.todo || mongoose.model("todo", todoSchema);
+let todoCollection =
+  mongoose.models.todoCollection ||
+  mongoose.model("todoCollection", todoSchema);
 
-export default todoCol;
+export default todoCollection;
