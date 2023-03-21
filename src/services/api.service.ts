@@ -1,6 +1,7 @@
 import todoCollection from "@/database/todoSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 import { validationChecks } from "@/utils/checks";
+import { todoFields } from "@/types/todo.type";
 import mongoose from "mongoose";
 
 export const getAllTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,7 +17,7 @@ export const getAllTodoData = async (req: NextApiRequest, res: NextApiResponse) 
 }
 
 export const postTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { task, priority, dueDate, done} = req.body;
+    const { task, priority, dueDate, done}: todoFields = req.body;
 
     let validationErrors = validationChecks({ task, priority, dueDate, done});
     if ( validationErrors !== '' ){

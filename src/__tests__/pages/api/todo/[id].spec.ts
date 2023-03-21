@@ -63,6 +63,14 @@ describe("Testing with id route path",()=>{
                 expect(response.statusCode).toEqual(404)
                 expect(data).toStrictEqual({message:"Todo Data with given id cannot be found!"})      
         })
+        test('Request with METHOD not defined',async () => {
+            const request  = httpMocks.createRequest({ method:'ANY', query:{id} }); 
+            const response = httpMocks.createResponse();
+            await app(request, response);
+            const data = response._getData();
+            expect(response.statusCode).toEqual(404)
+            expect(data).toStrictEqual({message:"Request Method Not found"}) 
+        })
     })
 
     describe("Get request with given id",()=>{
