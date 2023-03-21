@@ -68,6 +68,7 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
       handleRefresh();
     } else if (newTask.length > 0) {
@@ -78,6 +79,7 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
     } else {
       setIsError(true);
@@ -87,6 +89,7 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top-right",
       });
       // setIsDisabled(true);
     }
@@ -99,6 +102,7 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
       status: "error",
       duration: 3000,
       isClosable: true,
+      position: "top-right",
     });
     setDueDate(new Date().toLocaleDateString());
   };

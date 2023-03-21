@@ -27,11 +27,11 @@ export async function CreateTask(task: TodoData) {
   const newTask = await createTodo("", task);
 }
 
-export default function Todo({ todos }: TodoProps) {
-  const [selectedPriority, setSelectedPriority] = useState("");
-  const [Todos, setTodos] = useState(todos);
+export default function Todo({ todos: initialTodos }: TodoProps) {
+  // const [selectedPriority, setSelectedPriority] = useState("");
+  const [todos, setTodos] = useState(initialTodos);
   const [activeFilter, setActiveFilter] = useState("today");
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
 
   const router = useRouter();
 
@@ -46,9 +46,9 @@ export default function Todo({ todos }: TodoProps) {
   //   setIsRefreshing(false);
   // }, [Todos]);
 
-  const handlePrioritySelection = (selectedPriority: string) => {
-    setSelectedPriority(selectedPriority);
-  };
+  // const handlePrioritySelection = (selectedPriority: string) => {
+  //   setSelectedPriority(selectedPriority);
+  // };
 
   return (
     <>
