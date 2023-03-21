@@ -5,10 +5,9 @@ import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import NewTask from "@/components/newTask/newTask";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sidebar from "@/components/sideNav/sideNav";
 import { useRouter } from "next/router";
-import { IncomingMessage } from "http";
 import GetBaseUrl from "@/utils/baseUrl";
 
 interface TodoProps {
@@ -44,7 +43,7 @@ export default function Todo({ todos: initialTodos }: TodoProps) {
 
   // useEffect(() => {
   //   setIsRefreshing(false);
-  // }, [Todos]);
+  // }, [todos]);
 
   // const handlePrioritySelection = (selectedPriority: string) => {
   //   setSelectedPriority(selectedPriority);
@@ -94,36 +93,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let dueDate: string = "";
   let todos: TodoData[] = [];
 
-  // const req = ctx.req as IncomingMessage & {
-  //   protocol?: string;
-  //   headers?: { host?: string };
-  // };
-
-  // if (!req.headers?.host) {
-  // Handle the case where the 'host' header is not present
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
-  // const protocol = req.protocol || "http";
-  // const baseUrl = `${protocol}://${req.headers.host}`;
-
-  // const baseUrl = `${ctx.req?.headers.host}`;
   const baseUrl = GetBaseUrl(ctx) as string;
   try {
     if (ctx.query.filter === "all") {
       todos = await getTodos(baseUrl, { dueDate: "" });
-      // if (_todos !== undefined && _todos !== null) {
-      //   todos = _todos;
-      // }
-      // console.log("all", todos);
     } else if (ctx.query.filter === "next7") {
       //do something
       // add 7 days to current date and then add 5 hr 30 min offset for indian time then set the date in yyyy-mm-dd format
       dueDate = new Date(Date.now() + 19800000 + 604800000)
         .toISOString()
         .split("T")[0];
-      // console.log("7 days? -> ", dueDate);
       todos = await getTodos(baseUrl, { dueDate: dueDate });
     } else if (
       ctx.query.filter === "today" ||
@@ -132,8 +111,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     ) {
       dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
       todos = await getTodos(baseUrl, { dueDate: dueDate });
-      // console.log("today", todos);
-      // todos = await getTodosByDueDate(dueDate as string);
       let newTodos;
       if (todos.length > 0 && todos !== undefined && todos !== null) {
         newTodos = todos.filter((todo) => {
