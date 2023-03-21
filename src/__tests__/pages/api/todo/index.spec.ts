@@ -89,6 +89,15 @@ describe("test with instance",()=>{
         
     });
 
+    test('Request with METHOD not defined',async () => {
+        const request  = httpMocks.createRequest({ method:'ANY' }); 
+        const response = httpMocks.createResponse();
+        await handler(request, response);
+        const data = response._getData();
+        expect(response.statusCode).toEqual(404)
+        expect(data).toStrictEqual({message:"Request Method Not found"}) 
+    })
+
  
 })
 

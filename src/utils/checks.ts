@@ -1,5 +1,6 @@
 import {Types} from 'mongoose'
 import todoCollection from '@/database/todoSchema'
+import { todoFields } from '@/types/todo.type'
 
 export const isPastDate = (dueDate: string)=>{
     const todayDate = new Date()
@@ -22,8 +23,7 @@ export const isIdValid =  async (id: string) => {
     return false;
 }
 
-// type validationCheckType = ({ task: string|undefined; priority: string|undefined; dueDate: string|undefined; done: boolean|undefined}) => any
-export const validationChecks = ({ task, priority, dueDate, done}) =>{
+export const validationChecks = ({ task, priority, dueDate, done}: todoFields) =>{
     let errorMessage: string = '';
     if ( task === undefined )
         errorMessage += 'task is not provided, ';
