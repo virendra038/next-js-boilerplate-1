@@ -1,10 +1,5 @@
 import TodoList from "@/components/Todo/TodoList";
-import {
-  createTodo,
-  getTodos,
-  getTodosByDueDate,
-  updateTodoTask,
-} from "@/services/todo.service";
+import { createTodo, getTodos, updateTodoTask } from "@/services/todo.service";
 import type { TodoData } from "@/types/todo.type";
 import type { GetServerSideProps } from "next";
 import { markTodoAsDone } from "@/services/todo.service";
@@ -21,15 +16,15 @@ interface TodoProps {
 }
 
 export async function CheckboxToggle(id: string) {
-  await markTodoAsDone(id);
+  await markTodoAsDone("", id);
 }
 
 export async function TodoTaskUpdate(id: string, data: string) {
-  await updateTodoTask(id, data);
+  await updateTodoTask("", id, data);
 }
 
 export async function CreateTask(task: TodoData) {
-  const newTask = await createTodo(task);
+  const newTask = await createTodo("", task);
 }
 
 export default function Todo({ todos }: TodoProps) {
@@ -40,15 +35,16 @@ export default function Todo({ todos }: TodoProps) {
 
   const router = useRouter();
 
-  const handleRefresh = (filter: string) => {
+  // const handleRefresh = (filter: string) => {
+  const handleRefresh = () => {
     // setIsRefreshing(true);
-    setActiveFilter(filter);
+    // setActiveFilter(filter);
     router.replace(router.asPath);
   };
 
-  useEffect(() => {
-    setIsRefreshing(false);
-  }, [Todos]);
+  // useEffect(() => {
+  //   setIsRefreshing(false);
+  // }, [Todos]);
 
   const handlePrioritySelection = (selectedPriority: string) => {
     setSelectedPriority(selectedPriority);
@@ -61,6 +57,7 @@ export default function Todo({ todos }: TodoProps) {
         activeFilter={activeFilter}
         handleRefresh={handleRefresh}
         setActiveFilter={setActiveFilter}
+        router={router}
       />
       <Flex
         flexDirection="column"
@@ -97,18 +94,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let dueDate: string = "";
   let todos: TodoData[] = [];
 
-  const req = ctx.req as IncomingMessage & {
-    protocol?: string;
-    headers?: { host?: string };
-  };
+  // const req = ctx.req as IncomingMessage & {
+  //   protocol?: string;
+  //   headers?: { host?: string };
+  // };
 
-  if (!req.headers?.host) {
-    // Handle the case where the 'host' header is not present
-    return {
-      notFound: true,
-    };
-  }
-  const protocol = req.protocol || "http";
+  // if (!req.headers?.host) {
+  // Handle the case where the 'host' header is not present
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+  // const protocol = req.protocol || "http";
   // const baseUrl = `${protocol}://${req.headers.host}`;
 
   // const baseUrl = `${ctx.req?.headers.host}`;
@@ -119,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       // if (_todos !== undefined && _todos !== null) {
       //   todos = _todos;
       // }
-      console.log("all", todos);
+      // console.log("all", todos);
     } else if (ctx.query.filter === "next7") {
       //do something
       // add 7 days to current date and then add 5 hr 30 min offset for indian time then set the date in yyyy-mm-dd format
@@ -135,7 +132,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     ) {
       dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
       todos = await getTodos(baseUrl, { dueDate: dueDate });
-      console.log("today", todos);
+      // console.log("today", todos);
       // todos = await getTodosByDueDate(dueDate as string);
       let newTodos;
       if (todos.length > 0 && todos !== undefined && todos !== null) {
@@ -150,6 +147,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     } else {
       todos = await getTodos(baseUrl, { dueDate: "" });
+      console.log("all", todos);
     }
     return {
       props: {
