@@ -65,13 +65,24 @@ export default function TodoList({
     }
   };
 
-  const handleInputUpdate = async (id: string, data: string) => {
+  const handleInputUpdate = async (id: string, data: string, task: string) => {
     //send put req to update the task property of the todo
     try {
       // BugFix checking if the input is empty, if so, show a toast
       if (data === "") {
         toast({
           title: "Task cannot be empty.",
+          description: "Please enter a valid task.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        handleRefresh();
+        return;
+      } else if (data === task) {
+        toast({
+          title: "Task is the same.",
           description: "Please enter a valid task.",
           status: "error",
           duration: 3000,
@@ -126,7 +137,7 @@ export default function TodoList({
                         handleTodoDoubleClick(e);
                       }}
                       onSubmit={(data) =>
-                        handleInputUpdate(todo._id!.toString(), data)
+                        handleInputUpdate(todo._id!.toString(), data, todo.task)
                       }
                     >
                       <EditablePreview
