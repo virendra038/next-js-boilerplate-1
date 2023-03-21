@@ -76,6 +76,7 @@ export default function TodoList({
           status: "error",
           duration: 3000,
           isClosable: true,
+          position: "top-right",
         });
         handleRefresh();
         return;
@@ -94,6 +95,7 @@ export default function TodoList({
         status: "success",
         duration: 3000,
         isClosable: true,
+        position: "top-right",
       });
       handleRefresh();
     } catch (error) {
