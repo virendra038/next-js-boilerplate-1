@@ -22,7 +22,7 @@ describe("NewTask component", () => {
     const mockTask = {
       task: "test task",
       priority: "Low",
-      dueDate: "2023-03-21",
+      dueDate: "2023-03-24",
       done: false,
     };
 
