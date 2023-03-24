@@ -63,7 +63,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                         pointerEvents="none"
                                         children={<CFaUserAlt color="gray.300" />}
                                     />
-                                    <Input type="email" placeholder="email address" name='email'  onChange={onChangeInput}/>
+                                    <Input type="email" placeholder="Email" name='email'  onChange={onChangeInput}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
