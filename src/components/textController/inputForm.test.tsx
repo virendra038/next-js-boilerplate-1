@@ -16,13 +16,13 @@ describe("Render the input form component", () => {
 
     it('renders the form with email and password inputs', () => {
         render(<InputForm user={user} />);   
-        expect(screen.getByPlaceholderText('email address')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
       });
 
     it('shows and hides password when show button is clicked', () => {
         render(<InputForm user={user} />);
-        const passwordInput = screen.getByPlaceholderText('Password');
+        const passwordInput = screen.getByPlaceholderText('Password') as HTMLInputElement;
         const showButton = screen.getByText('Show');
         expect(passwordInput.type).toBe('password');
         fireEvent.click(showButton);
