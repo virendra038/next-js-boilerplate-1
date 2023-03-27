@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import NewTask from "@/components/newTask/newTask";
 
 describe("NewTask component", () => {
@@ -22,7 +22,7 @@ describe("NewTask component", () => {
     const mockTask = {
       task: "test task",
       priority: "Low",
-      dueDate: "2023-03-24",
+      dueDate: new Date(Date.now() + 19800000).toISOString().slice(0, 10),
       done: false,
     };
 
