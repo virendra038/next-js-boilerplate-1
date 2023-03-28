@@ -8,10 +8,13 @@ export const getAllTodoData: (parameters: filterType) => Promise<[TodoData[], nu
     const { priority, isFinished, dueDate } = parameters;
     const todayDate = new Date().setHours(0,0,0,0);
     const filters = {
-        ...(priority !== undefined) && {priority},
-        dueDate: dueDate !== undefined ? {$gte: todayDate, $lte: dueDate} : {$gte: todayDate},
-        done: isFinished !== undefined? isFinished : false
-    }
+        ...(priority !== undefined && { priority }),
+        dueDate:
+          dueDate !== undefined && dueDate !== ""
+            ? { $gte: todayDate, $lte: dueDate }
+            : { $gte: todayDate },
+        done: isFinished !== undefined ? isFinished : false,
+      };
     const todoData = await todoCollection.find(filters).sort({dueDate:1})
     return [todoData, 200];
 }
