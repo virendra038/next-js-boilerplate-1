@@ -3,7 +3,7 @@ import NewTask from "@/components/newTask/newTask";
 
 describe("NewTask component", () => {
   test("renders a form with input field, priority dropdown and add button", () => {
-    render(<NewTask CreateTask={() => {}} handleRefresh={() => {}} />);
+    render(<NewTask CreateTask={() => {}} />);
     const input = screen.getByPlaceholderText("+Add a new task");
     const addButton = screen.getByRole("button", { name: "Add" });
     const priorityDropdown = screen.getByLabelText("Select priority");
@@ -14,8 +14,7 @@ describe("NewTask component", () => {
 
   test("calls CreateTask function when add button is clicked with valid input", async () => {
     const createTaskMock = jest.fn();
-    const handleRefreshMock = jest.fn();
-    render(<NewTask CreateTask={createTaskMock} handleRefresh={() => {}} />);
+    render(<NewTask CreateTask={createTaskMock} />);
     const input = screen.getByPlaceholderText("+Add a new task");
     const addButton = screen.getByRole("button", { name: "Add" });
     const priorityDropdown = screen.getByLabelText("Select priority");
@@ -34,17 +33,17 @@ describe("NewTask component", () => {
     expect(createTaskMock).toHaveBeenCalledWith(mockTask);
   });
 
-  //   test("disables add button when input is empty", () => {
-  //     render(<NewTask CreateTask={() => {}} />);
-  //     const input = screen.getByPlaceholderText("+Add a new task");
-  //     const addButton = screen.getByRole("button", { name: "Add" });
+  // test("disables add button when input is empty", () => {
+  //   render(<NewTask CreateTask={() => {}} />);
+  //   const input = screen.getByPlaceholderText("+Add a new task");
+  //   const addButton = screen.getByRole("button", { name: "Add" });
 
-  //     expect(addButton).toBeDisabled();
+  //   expect(addButton).toBeDisabled();
 
-  //     fireEvent.change(input, { target: { value: "test task" } });
+  //   fireEvent.change(input, { target: { value: "test task" } });
 
-  //     expect(addButton).not.toBeDisabled();
-  //   });
+  //   expect(addButton).not.toBeDisabled();
+  // });
 
   // test("displays an error message when input is empty and add button is clicked", () => {
   //   render(<NewTask CreateTask={() => {}} />);

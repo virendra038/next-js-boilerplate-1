@@ -12,20 +12,19 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import type { TodoData } from "@/types/todo.type";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 interface TodosProps {
   todos: TodoData[];
-  CheckboxToggle: (id: string) => void;
-  TodoTaskUpdate: (id: string, data: string) => void;
-  setTodos: (todos: TodoData[]) => void;
+  CheckboxToggle: (id: string, checked: boolean) => void;
+  TodoTaskUpdate: (id: string, newTask: string) => void;
   handleRefresh: () => void;
 }
 
 const handleTodoDoubleClick = (
   e: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
-  // console.log(e);
   console.log("double clicked");
   //send redirect req to the specific todo page
 };
@@ -34,42 +33,41 @@ export default function TodoList({
   todos,
   CheckboxToggle,
   TodoTaskUpdate,
-  setTodos,
   handleRefresh,
 }: TodosProps) {
-  // const [todos, setTodos] = useState<TodoData[]>(initialTodos);
   const toast = useToast();
+  // const router = useRouter();
 
-  const handleCheckboxClick = async (id: string) => {
+  // useEffect(() => {
+  //   router.push(router.asPath);
+  // }, [todos]);
+
+  const handleCheckboxClick = async (id: string, checked: boolean) => {
     //send put req to toggle the done property of the todo
     try {
-      CheckboxToggle(id);
+      CheckboxToggle(id, checked);
       const updatedTodos = todos.map((todo) => {
         if (todo._id!.toString() === id) {
           return { ...todo, done: !todo.done };
         }
         return todo;
       });
-      setTodos(updatedTodos);
-      toast({
-        title: "Todo updated.",
-        description: "We've updated the todo for you.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-      handleRefresh();
+      // setTodos(updatedTodos);
+      // handleRefresh();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleInputUpdate = async (id: string, data: string, task: string) => {
+  const handleInputUpdate = async (
+    id: string,
+    newTask: string,
+    task: string
+  ) => {
     //send put req to update the task property of the todo
     try {
       // BugFix checking if the input is empty, if so, show a toast
-      if (data === "") {
+      if (newTask === "") {
         toast({
           title: "Task cannot be empty.",
           description: "Please enter a valid task.",
@@ -80,7 +78,7 @@ export default function TodoList({
         });
         handleRefresh();
         return;
-      } else if (data === task) {
+      } else if (newTask === task) {
         toast({
           title: "Task is the same.",
           description: "Please enter a valid task.",
@@ -92,23 +90,14 @@ export default function TodoList({
         handleRefresh();
         return;
       }
-      TodoTaskUpdate(id, data);
+      //Update task call
+      TodoTaskUpdate(id, newTask);
       const updatedTodos = todos.map((todo) => {
         if (todo._id!.toString() === id) {
-          return { ...todo, task: data };
+          return { ...todo, task: newTask };
         }
         return todo;
       });
-      setTodos(updatedTodos);
-      toast({
-        title: "Task updated.",
-        description: "We've updated the todo task for you.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-      handleRefresh();
     } catch (error) {
       console.log(error);
     }
@@ -136,8 +125,12 @@ export default function TodoList({
                       onDoubleClick={(e) => {
                         handleTodoDoubleClick(e);
                       }}
-                      onSubmit={(data) =>
-                        handleInputUpdate(todo._id!.toString(), data, todo.task)
+                      onSubmit={(newTask) =>
+                        handleInputUpdate(
+                          todo._id!.toString(),
+                          newTask,
+                          todo.task
+                        )
                       }
                     >
                       <EditablePreview
@@ -158,7 +151,10 @@ export default function TodoList({
                       outline={todo.done ? "none" : "2px solid red"}
                       isChecked={todo.done}
                       onChange={(e) => {
-                        handleCheckboxClick(todo._id!.toString());
+                        handleCheckboxClick(
+                          todo._id!.toString(),
+                          e.target.checked
+                        );
                       }} /*onClick={mark the todo done and send req on backend}*/
                     />
                   </Td>

@@ -1,33 +1,75 @@
 import TodoList from "@/components/Todo/TodoList";
-import { getTodobyId, updateTodoTask } from "@/services/todo.service";
 import type { TodoData } from "@/types/todo.type";
-import { GetServerSideProps } from "next";
-import { markTodoAsDone } from "@/services/todo.service";
-import { Flex, Heading, Button, Box } from "@chakra-ui/react";
+import { Flex, Heading, Button, Box, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import GetBaseUrl from "@/utils/baseUrl";
 import Sidebar from "@/components/sideNav/sideNav";
-// import NewTask from "@/components/newTask/newTask";
-// import { CreateTask } from "./index";
+import { useTodos } from "@/hooks/todos";
+import { useTodoById } from "@/hooks/todoById";
 
-async function CheckboxToggle(id: string) {
-  await markTodoAsDone("", id);
-}
-
-async function TodoTaskUpdate(id: string, data: string) {
-  await updateTodoTask("", id, data);
-}
-
-export default function Todo(todo: TodoData) {
-  const [todos, setTodos] = useState([todo]);
-  const [activeFilter, setActiveFilter] = useState("today");
+export default function Todo() {
   const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState("today");
+  const toast = useToast();
+  let todos: TodoData[] = [];
 
-  const handleRefresh = () => {
-    // setIsRefreshing(true);
-    // setActiveFilter(filter);
-    router.replace(router.asPath);
+  const { todo } = useTodoById(router.query.id as string);
+  if (todo == undefined) {
+    return <div>Loading...</div>;
+  } else {
+    todos.push(todo);
+  }
+
+  const {
+    updateTodoTask,
+    markTodoAsDone,
+    mutate: refresh,
+  } = useTodos(activeFilter);
+
+  const TodoTaskUpdate = async (id: string, data: string) => {
+    const res = await updateTodoTask(id, data);
+    if (res.data && res.error === null) {
+      toast({
+        title: "Task updated.",
+        description: "We've updated the todo task for you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else if (res.error !== null) {
+      toast({
+        title: "Error.",
+        description: res.error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
+
+  const CheckboxToggle = async (id: string, isDone: boolean) => {
+    const res = await markTodoAsDone(id, isDone);
+    if (res.data && res.error === null) {
+      toast({
+        title: "Todo updated.",
+        description: "We've updated the todo for you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else if (res.error !== null) {
+      toast({
+        title: "Error.",
+        description: res.error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   };
 
   return (
@@ -35,7 +77,7 @@ export default function Todo(todo: TodoData) {
       <Sidebar
         username="Puneet"
         activeFilter={activeFilter}
-        handleRefresh={handleRefresh}
+        handleRefresh={refresh}
         setActiveFilter={setActiveFilter}
         router={router}
       />
@@ -51,43 +93,17 @@ export default function Todo(todo: TodoData) {
           Todo
         </Heading>
         {/* <Box>
-          <NewTask CreateTask={CreateTask} handleRefresh={handleRefresh} />
+          <NewTask CreateTask={CreateTask} />
         </Box> */}
         <Box minW={{ base: "90%", md: "468px" }} mb="2">
           <TodoList
             TodoTaskUpdate={TodoTaskUpdate}
             CheckboxToggle={CheckboxToggle}
             todos={todos}
-            setTodos={setTodos}
-            handleRefresh={handleRefresh}
+            handleRefresh={refresh}
           />
         </Box>
       </Flex>
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  let todo: TodoData;
-  const id = ctx.params!.id;
-  const baseUrl = GetBaseUrl(ctx) as string;
-
-  if (!id || Array.isArray(id)) {
-    return {
-      notFound: true,
-    };
-  }
-  try {
-    todo = await getTodobyId(baseUrl, id);
-    return {
-      props: {
-        ...todo,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      notFound: true,
-    };
-  }
-};

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import type { NextRouter } from "next/router";
 
@@ -21,7 +21,8 @@ export default function Sidebar({
 }: SidebarProps) {
   const handleFilterClick = (filter: string) => {
     setActiveFilter(filter);
-    // router.push(`/todo?filter=${filter}`);
+
+    router.push(`?filter=${filter}`);
     // handleRefresh();
   };
 
@@ -31,7 +32,8 @@ export default function Sidebar({
     const filter = router.query.filter;
     if (filter) {
       setActiveFilter(filter as string);
-      // handleRefresh();
+      handleRefresh();
+      // router.push(`?filter=${filter}`);
       // router.replace(router.asPath);
     }
   }, [router.query.filter]);
@@ -53,46 +55,39 @@ export default function Sidebar({
         <Text>{username}</Text>
       </Flex>
       <Box mb="2rem">
-        <Link href="/todo?filter=all">
-          <Button
-            variant={activeFilter === "all" ? "solid" : "ghost"}
-            colorScheme={activeFilter === "all" ? "blue" : undefined}
-            onClick={() => {
-              handleFilterClick("all");
-            }}
-            mt="0.5rem"
-            w="100%"
-          >
-            All Tasks
-          </Button>
-        </Link>
-
-        <Link href="/todo?filter=today">
-          <Button
-            variant={activeFilter === "today" ? "solid" : "ghost"}
-            colorScheme={activeFilter === "today" ? "blue" : undefined}
-            onClick={() => {
-              handleFilterClick("today");
-            }}
-            mt="0.5rem"
-            w="100%"
-          >
-            Today
-          </Button>
-        </Link>
-        <Link href="/todo?filter=next7">
-          <Button
-            variant={activeFilter === "next7" ? "solid" : "ghost"}
-            colorScheme={activeFilter === "next7" ? "blue" : undefined}
-            onClick={() => {
-              handleFilterClick("next7");
-            }}
-            mt="0.5rem"
-            w="100%"
-          >
-            Next 7 days
-          </Button>
-        </Link>
+        <Button
+          variant={activeFilter === "all" ? "solid" : "ghost"}
+          colorScheme={activeFilter === "all" ? "blue" : undefined}
+          onClick={() => {
+            handleFilterClick("all");
+          }}
+          mt="0.5rem"
+          w="100%"
+        >
+          All Tasks
+        </Button>
+        <Button
+          variant={activeFilter === "today" ? "solid" : "ghost"}
+          colorScheme={activeFilter === "today" ? "blue" : undefined}
+          onClick={() => {
+            handleFilterClick("today");
+          }}
+          mt="0.5rem"
+          w="100%"
+        >
+          Today
+        </Button>
+        <Button
+          variant={activeFilter === "next7" ? "solid" : "ghost"}
+          colorScheme={activeFilter === "next7" ? "blue" : undefined}
+          onClick={() => {
+            handleFilterClick("next7");
+          }}
+          mt="0.5rem"
+          w="100%"
+        >
+          Next 7 days
+        </Button>
       </Box>
     </Box>
   );
