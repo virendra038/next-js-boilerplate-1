@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "jest --watch",
-    "test_coverage": "jest --coverage",
+    "test_coverage": "jest --coverage --coverageThreshold=\"global{statements: 80, branches: 80, functions: 80, lines: 80}\" --bail",
     "ci:test": "jest",
     "cypress": "cypress open"
   },
