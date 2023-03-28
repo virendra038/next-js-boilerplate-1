@@ -7,8 +7,8 @@ export type TodoData = {
 };
 
 export type todoFields = {
-  task: string | undefined;
-  priority: string | undefined;
-  dueDate: string | undefined;
-  done: boolean | undefined;
-};
+  task?: string;
+  priority?: string;
+  dueDate?: string;
+  done?: boolean;
+}
