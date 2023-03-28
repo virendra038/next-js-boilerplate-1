@@ -18,6 +18,14 @@ const customJestConfig = {
     "@/utils/(.*)$": "<rootDir>/src/utils/$1"
   },
   testEnvironment: "jest-environment-jsdom",
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80
+    }
+  }
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
