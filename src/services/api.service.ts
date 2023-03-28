@@ -1,56 +1,53 @@
 import todoCollection from "@/database/todoSchema";
-import { NextApiRequest, NextApiResponse } from "next";
 import { validationChecks } from "@/utils/checks";
-import { todoFields } from "@/types/todo.type";
-import mongoose from "mongoose";
+import { TodoData, todoFields } from "@/types/todo.type";
+import { filterType } from "@/types/filter.type";
+import { Types } from "mongoose";
 
-export const getAllTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { priority, isFinished, dueDate } = req.query;
+export const getAllTodoData: (parameters: filterType) => Promise<[TodoData[], number]>  = async (parameters) => {
+    const { priority, isFinished, dueDate } = parameters;
     const todayDate = new Date().setHours(0,0,0,0);
     const filters = {
-        ...(priority !== undefined) && {priority},
-        dueDate: dueDate !== undefined ? {$gte: todayDate, $lte: dueDate} : {$gte: todayDate},
-        done: isFinished !== undefined? isFinished : false
-    }
+        ...(priority !== undefined && { priority }),
+        dueDate:
+          dueDate !== undefined && dueDate !== ""
+            ? { $gte: todayDate, $lte: dueDate }
+            : { $gte: todayDate },
+        done: isFinished !== undefined ? isFinished : false,
+      };
     const todoData = await todoCollection.find(filters).sort({dueDate:1})
-    res.status(200).send(todoData)
+    return [todoData, 200];
 }
 
-export const postTodoData = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { task, priority, dueDate, done}: todoFields = req.body;
+export const postTodoData: (parameters: todoFields) => Promise<[TodoData | {message:string}, number]> = async (parameters) => {
+    const { task, priority, dueDate, done} = parameters;
 
     let validationErrors = validationChecks({ task, priority, dueDate, done});
-    if ( validationErrors !== '' ){
-        res.status(400).send({message:"Fix following issues: "+validationErrors})
-        return;
-    }
+    if ( validationErrors !== '' )
+        return [{message:"Fix following issues: "+validationErrors},400]
 
     const sameTodoData = await todoCollection.find({task, dueDate}).exec()
-    if ( sameTodoData.length > 0 ){
-        res.status(400).send({message:"Same Todo Data already exists"})
-        return;
-    }
+    if ( sameTodoData.length > 0 )
+        return [{message:"Same Todo Data already exists"},400]
 
     const todoData = new todoCollection({task, priority, dueDate , done})
     const saveResponse = await todoData.save();
     const dataResponse = await todoCollection.findById({_id:saveResponse._id})
-    res.status(201).send(dataResponse)
+    return [dataResponse, 201]
 }
 
-export const getTodoById = async (req: NextApiRequest, res: NextApiResponse, _id: mongoose.Types.ObjectId )=>{
+export const getTodoById: (_id: Types.ObjectId) => Promise<[TodoData, number]> = async (_id )=>{
     const todoData = await todoCollection.findById({_id})
-    res.status(200).send(todoData)
+    return [todoData, 200];
 }
 
-export const updateTodoById = async (req: NextApiRequest, res: NextApiResponse, _id: mongoose.Types.ObjectId) => {
-    let response = await todoCollection.findOneAndUpdate({_id},req.body,{new:true});
-    res.status(200).send(response);
+export const updateTodoById: (payload: todoFields, _id: Types.ObjectId) => Promise<[TodoData, number]> = async (payload, _id) => {
+    let response = await todoCollection.findOneAndUpdate({_id},payload,{new:true});
+    return [response, 200];
 }
 
-export const deleteTodoById = async (req: NextApiRequest, res: NextApiResponse, _id: mongoose.Types.ObjectId) => {
+export const deleteTodoById: (_id: Types.ObjectId) => Promise<[{message:string}, number]> = async (_id) => {
     await todoCollection.deleteOne({_id});
-    res.status(200).send({
-        message:"Data deleted succesfully!"
-    })
+    return [{message:"Data deleted succesfully!"}, 200]
 }
 

@@ -15,21 +15,28 @@ export default async function app(req: NextApiRequest, res: NextApiResponse) {
         const _id = new Types.ObjectId(id)
 
         switch ( req.method ){
-            case "GET": 
-                await getTodoById(req, res, _id)
+            case "GET": {
+                const [responseBody, statusCode] = await getTodoById(_id)
+                res.status(statusCode).send(responseBody);
                 break;
+            }
 
-            case "PUT": 
-                await updateTodoById(req, res, _id)
+            case "PUT": {
+                const [responseBody, statusCode] = await updateTodoById(req.body,_id)
+                res.status(statusCode).send(responseBody);
                 break;
+            }
 
-            case "DELETE": 
-                await deleteTodoById(req, res, _id)
+            case "DELETE": {
+                const [responseBody, statusCode] = await deleteTodoById(_id)
+                res.status(statusCode).send(responseBody);
                 break;
+            }
 
-            default:
+            default: {
                 res.status(404).send({message:"Request Method Not found"})
                 break;
+            }
         }
     } catch (err) {
         res.status(400).send({message: (err as Error).message});

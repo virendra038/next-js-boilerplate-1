@@ -6,17 +6,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await connectDB();
     try {
         switch( req.method ){
-            case "GET": 
-                await getAllTodoData(req,res)
+            case "GET": {
+                const [responseBody, statusCode] = await getAllTodoData(req.query)
+                res.status(statusCode).send(responseBody);
                 break;
+            }
             
-            case "POST": 
-                await postTodoData(req,res)
+            case "POST": {
+                const [responseBody, statusCode] = await postTodoData(req.body)
+                res.status(statusCode).send(responseBody);
                 break;
+            }
         
-            default:
+            default: {
                 res.status(404).send({message:"Request Method Not found"})
                 break;
+            }
         }
     }catch (err) {
         res.status(400).send({message:(err as Error).message});
