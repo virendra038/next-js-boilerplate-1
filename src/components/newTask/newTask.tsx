@@ -9,6 +9,7 @@ import {
   Stack,
   StackDivider,
   Heading,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
@@ -17,11 +18,9 @@ import { TodoData } from "@/types/todo.type";
 
 interface NewTaskProps {
   CreateTask: (task: TodoData) => void;
-  // handleRefresh: (filter: string) => void;
-  handleRefresh: () => void;
 }
 
-export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
+export default function NewTask({ CreateTask }: NewTaskProps) {
   const [newTask, setNewTask] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -57,16 +56,6 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
       setIsDisabled(true);
       //send post req to add the new task
       CreateTask(task);
-      //toast
-      toast({
-        title: "Todo created.",
-        description: "We've created the todo for you.",
-        status: "success",
-        duration: 2000,
-        isClosable: true,
-        position: "top-right",
-      });
-      handleRefresh();
     } else if (newTask.length > 0) {
       setIsError(true);
       toast({
@@ -102,6 +91,7 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
     });
     setDueDate(new Date().toLocaleDateString());
   };
+  // const displayDirection = useBreakpointValue({ base: "column", md: "row" });
 
   return (
     <Card align="center" variant="elevated" size="sm">
@@ -123,9 +113,13 @@ export default function NewTask({ CreateTask, handleRefresh }: NewTaskProps) {
               type="date"
               // defaultValue={new Date().toISOString().slice(0, 10)}
               defaultValue={dueDate}
+              aria-label="Due Date"
               onChange={(e) => {
                 // due date cannot be set to past date
-                if (new Date(e.target.value).getDate() < new Date().getDate()) {
+                if (
+                  new Date(e.target.value).setHours(0, 0, 0, 0) <
+                  new Date().setHours(0, 0, 0, 0)
+                ) {
                   backDateToast();
                   return;
                 }

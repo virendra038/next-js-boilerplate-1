@@ -10,14 +10,14 @@ describe("TodoList Component", () => {
 
   const todos: TodoData[] = [
     {
-      _id: 1,
+      _id: "1",
       task: "Task 1",
       priority: "High",
       dueDate: currentDate,
       done: false,
     },
     {
-      _id: 2,
+      _id: "2",
       task: "Task 2",
       priority: "Medium",
       dueDate: currentDate,
@@ -36,7 +36,6 @@ describe("TodoList Component", () => {
   it("renders the TodoList component", () => {
     const { getByText } = render(
       <TodoList
-        setTodos={() => {}}
         handleRefresh={() => {}}
         todos={todos}
         CheckboxToggle={CheckboxToggle}
@@ -53,7 +52,6 @@ describe("TodoList Component", () => {
   it("renders the tasks with correct information", () => {
     const { getByText, getAllByText } = render(
       <TodoList
-        setTodos={() => {}}
         handleRefresh={() => {}}
         todos={todos}
         CheckboxToggle={CheckboxToggle}
@@ -72,7 +70,6 @@ describe("TodoList Component", () => {
   it("calls the CheckboxToggle function when checkbox is clicked", () => {
     const { getByText } = render(
       <TodoList
-        setTodos={() => {}}
         handleRefresh={() => {}}
         todos={todos}
         CheckboxToggle={CheckboxToggle}
@@ -94,7 +91,6 @@ describe("TodoList Component", () => {
   it("updates the task when edited", () => {
     const { getByText, getByDisplayValue } = render(
       <TodoList
-        setTodos={() => {}}
         handleRefresh={() => {}}
         todos={todos}
         CheckboxToggle={CheckboxToggle}
@@ -116,7 +112,6 @@ describe("TodoList Component", () => {
   // it("toggles the checkbox when clicked", () => {
   //   const { getByLabelText } = render(
   //     <TodoList
-  //       setTodos={() => {}}
   //       handleRefresh={() => {}}
   //       todos={todos}
   //       CheckboxToggle={CheckboxToggle}

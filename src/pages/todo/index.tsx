@@ -1,62 +1,107 @@
 import TodoList from "@/components/Todo/TodoList";
-import { createTodo, getTodos, updateTodoTask } from "@/services/todo.service";
-import type { TodoData } from "@/types/todo.type";
-import type { GetServerSideProps } from "next";
-import { markTodoAsDone } from "@/services/todo.service";
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Toast, useToast } from "@chakra-ui/react";
 import NewTask from "@/components/newTask/newTask";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sidebar from "@/components/sideNav/sideNav";
 import { useRouter } from "next/router";
-import GetBaseUrl from "@/utils/baseUrl";
+import { useTodos } from "@/hooks/todos";
+import { TodoData } from "@/types/todo.type";
 
-interface TodoProps {
-  todos: TodoData[];
-}
-
-export async function CheckboxToggle(id: string) {
-  await markTodoAsDone("", id);
-}
-
-export async function TodoTaskUpdate(id: string, data: string) {
-  await updateTodoTask("", id, data);
-}
-
-export async function CreateTask(task: TodoData) {
-  const newTask = await createTodo("", task);
-}
-
-export default function Todo({ todos: initialTodos }: TodoProps) {
-  // const [selectedPriority, setSelectedPriority] = useState("");
-  const [todos, setTodos] = useState(initialTodos);
-  const [activeFilter, setActiveFilter] = useState("today");
-  // const [isRefreshing, setIsRefreshing] = useState(false);
-
+export default function Todo() {
   const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState("today");
+  const toast = useToast();
 
-  // const handleRefresh = (filter: string) => {
-  const handleRefresh = () => {
-    // setIsRefreshing(true);
-    // setActiveFilter(filter);
-    router.replace(router.asPath);
+  const {
+    todos,
+    isLoading,
+    markTodoAsDone,
+    updateTodoTask,
+    createTodo,
+    mutate: refresh,
+    isError,
+  } = useTodos(activeFilter);
+
+  if (todos === undefined || isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const TodoTaskUpdate = async (id: string, data: string) => {
+    const res = await updateTodoTask(id, data);
+    if (res.data && res.error === null) {
+      toast({
+        title: "Task updated.",
+        description: "We've updated the todo task for you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else if (res.error !== null) {
+      toast({
+        title: "Error.",
+        description: res.error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   };
 
-  useEffect(() => {
-    // setIsRefreshing(false);
-    router.push(`/todo?filter=${activeFilter}`);
-    handleRefresh();
-  }, [activeFilter]);
+  const CreateTask = async (task: TodoData) => {
+    const res = await createTodo(task);
+    //toast
+    if (res.data && res.error === null) {
+      toast({
+        title: "Todo created.",
+        description: "We've created the todo for you.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else if (res.error !== null) {
+      toast({
+        title: "Error.",
+        description: res.error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
 
-  // const handlePrioritySelection = (selectedPriority: string) => {
-  //   setSelectedPriority(selectedPriority);
-  // };
+  const CheckboxToggle = async (id: string, isDone: boolean) => {
+    const res = await markTodoAsDone(id, isDone);
+    if (res.data && res.error === null) {
+      toast({
+        title: "Todo updated.",
+        description: "We've updated the todo for you.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else if (res.error !== null) {
+      toast({
+        title: "Error.",
+        description: res.error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
 
   return (
     <>
       <Sidebar
         username="Puneet"
         activeFilter={activeFilter}
-        handleRefresh={handleRefresh}
+        handleRefresh={refresh}
         setActiveFilter={setActiveFilter}
         router={router}
       />
@@ -72,62 +117,17 @@ export default function Todo({ todos: initialTodos }: TodoProps) {
           Todos
         </Heading>
         <Box>
-          <NewTask CreateTask={CreateTask} handleRefresh={handleRefresh} />
+          <NewTask CreateTask={CreateTask} />
         </Box>
-        {/* <Box>
-        <PriorityDropdown handlePrioritySelection={handlePrioritySelection} />
-      </Box> */}
         <Box mb="2">
           <TodoList
             TodoTaskUpdate={TodoTaskUpdate}
             CheckboxToggle={CheckboxToggle}
             todos={todos}
-            setTodos={setTodos}
-            handleRefresh={handleRefresh}
+            handleRefresh={refresh}
           />
         </Box>
       </Flex>
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  let dueDate: string = "";
-  let todos: TodoData[] = [];
-
-  const baseUrl = GetBaseUrl(ctx) as string;
-  try {
-    if (ctx.query.filter === "all") {
-      todos = await getTodos(baseUrl, { dueDate: "" });
-    } else if (ctx.query.filter === "next7") {
-      //do something
-      // add 7 days to current date and then add 5 hr 30 min offset for indian time then set the date in yyyy-mm-dd format
-      dueDate = new Date(Date.now() + 19800000 + 604800000)
-        .toISOString()
-        .split("T")[0];
-      todos = await getTodos(baseUrl, { dueDate: dueDate });
-    } else if (
-      ctx.query.filter === "today" ||
-      ctx.query.dueDate !== undefined ||
-      Object.keys(ctx.query).length === 0
-    ) {
-      dueDate = new Date(Date.now() + 19800000).toISOString().split("T")[0]; // setting the date in yyyy-mm-dd format and adding a 5 hr 30 min offset for indian time
-      // todos = await getTodos(baseUrl, { dueDate: dueDate });
-      todos = await getTodos(baseUrl, { dueDate: dueDate });
-    } else {
-      todos = await getTodos(baseUrl, { dueDate: "" });
-    }
-    return {
-      props: {
-        todos,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        todos: [],
-      },
-    };
-  }
-};
