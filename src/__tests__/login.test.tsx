@@ -24,7 +24,7 @@ describe('InputForm', () => {
                 err=''
             />
         );
-        expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Emailppp')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
     });
 

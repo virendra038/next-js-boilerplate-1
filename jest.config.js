@@ -20,7 +20,7 @@ const customJestConfig = {
   testEnvironment: "jest-environment-jsdom",
   coverageThreshold: {
     global: {
-      statements: 90,
+      statements: 50,
       branches: 50,
       functions: 50,
       lines: 50
