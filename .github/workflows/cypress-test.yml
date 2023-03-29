@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Run Cypress tests
-      uses: cypress-io/github-action@v5.x.x
+      uses: cypress-io/github-action@v5
       with:
         build: npm run build
         start: npm start
