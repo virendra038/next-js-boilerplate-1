@@ -27,8 +27,6 @@ jobs:
     - name: Run Cypress tests
       uses: cypress-io/github-action@v5
       with:
-        build: npm run build
-        start: npm start
         wait-on: 'https://preview-from-integration-poc.vercel.app'
         spec: cypress/e2e/**/*.cy.ts
         browser: chrome
