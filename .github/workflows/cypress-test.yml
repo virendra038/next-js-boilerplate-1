@@ -26,15 +26,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
     - name: Run Cypress tests
-      uses: cypress-io/github-action@v3
+      uses: cypress-io/github-action@v5.x.x
       with:
-        record: true
-        start: npm run cypress
+        build: npm run build
+        start: npm start
         wait-on: 'http://localhost:3000'
         spec: cypress/e2e/**/*.cy.ts
-        browser: chromium
+        browser: chrome
       env:
         CYPRESS_BASE_URL: http://localhost:3000
