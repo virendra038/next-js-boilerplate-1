@@ -29,7 +29,8 @@ jobs:
     - name: Run Cypress tests
       uses: cypress-io/github-action@v5
       with:
-        build: npm run build
-        wait-on: 'http://localhost:3000'
+        wait-on: 'https://next-js-boilerplate-from-beta.vercel.app'
         spec: cypress/e2e/**/*.cy.ts
         browser: chrome
+      env:
+        CYPRESS_BASE_URL: https://next-js-boilerplate-from-beta.vercel.app
