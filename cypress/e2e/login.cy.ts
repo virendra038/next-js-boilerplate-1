@@ -4,9 +4,9 @@ describe('Login page', () => {
     });
   
     it('displays the login form', () => {
-      cy.contains('Login333456').should('be.visible');
-      cy.get('[name="email333456"]').should('be.visible');
-      cy.get('[name="password333456"]').should('be.visible');
+      cy.contains('Login0').should('be.visible');
+      cy.get('[name="email"]').should('be.visible');
+      cy.get('[name="password"]').should('be.visible');
       cy.get('button[type="submit"]').should('be.visible');
     });
   
