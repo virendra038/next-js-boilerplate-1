@@ -26,8 +26,7 @@ jobs:
     - name: Run Cypress tests
       uses: cypress-io/github-action@v5
       with:
-        wait-on: ${{ github.event.deployment_status.target_url }}
         spec: cypress/e2e/**/*.cy.ts
         browser: chrome
       env:
-        CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+        CYPRESS_BASE_URL: 'https://preview-from-integration-poc.vercel.app'

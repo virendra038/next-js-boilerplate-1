@@ -63,7 +63,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                         pointerEvents="none"
                                         children={<CFaUserAlt color="gray.300" />}
                                     />
-                                    <Input type="email" placeholder="Email" name='email33345'  onChange={onChangeInput}/>
+                                    <Input type="email" placeholder="Email" name='email333456'  onChange={onChangeInput}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
@@ -76,7 +76,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Password"
-                                        name='password33345'
+                                        name='password333456'
                                         onChange={onChangeInput}
                                     />
                                     <InputRightElement width="4.5rem">
@@ -96,7 +96,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                 colorScheme="green"
                                 width="full"
                             >
-                               {login ? 'Login33345' : 'Continue'}
+                               {login ? 'Login333456' : 'Continue'}
                             </Button>
                             <Text>{err}</Text>
                         </Stack>
