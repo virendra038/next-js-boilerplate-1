@@ -9,4 +9,4 @@ on:
     runs-on: ubuntu-latest
     steps:
     - name: Run tests
-      run: "echo ${{ github.event }}""
+      run: "echo ${{ github.event.deployment_status.target_url  }}"
