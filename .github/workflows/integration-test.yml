@@ -1,25 +1,12 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Cypress Test Integration Branch
+# We are using Playwright but you may use your E2E framework of choice
+name: Playwright Tests
 
 on:
-  push:
-    branches: [ "integration_poc" ]
-
-jobs:
-  wait-for-vercel-deployment:
-
+  deployment_status:
+    
+  run-e2es:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-    - uses: UnlyEd/github-action-await-vercel@v1.2.39
-      id: await-vercel
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      with:
-        deployment-url: "https://preview-from-integration-poc.vercel.app"
-        timeout: 300 # Wait for 10 seconds before failing
-
-    - name: Displays the deployment name (example on how to read information about the deployment)
-      run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"    
-  
+    - name: Run tests
+        run: echo ${{ github.event }}
