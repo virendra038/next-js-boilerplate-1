@@ -10,7 +10,8 @@
     "test": "jest --watch",
     "test_coverage": "jest --coverage",
     "ci:test": "jest",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
