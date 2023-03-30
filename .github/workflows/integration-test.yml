@@ -5,4 +5,5 @@ jobs:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      run: echo "${{github.event.deployment}}"
+      - name: Log
+        run: echo "${{github.event.deployment}}"
