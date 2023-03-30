@@ -11,22 +11,8 @@ jobs:
   wait-for-vercel-deployment:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
-    - name: Retrieve deployment URL (example on how to set an ENV var)
-      uses: UnlyEd/github-action-await-vercel@v1.2.39
+    - uses: UnlyEd/github-action-await-vercel@v1.2.39
       id: await-vercel
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
