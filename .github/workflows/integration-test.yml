@@ -8,5 +8,11 @@ on:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: echo "${{github.event.deployment_status}}""
+      run: npm ci
     - name: Run tests
-      run: "echo ${{ github.event.deployment_status.target_url  }}"
+        run: npm run cypress
+          env:
+              BASE_URL: ${{ github.event.deployment_status.target_url }}
