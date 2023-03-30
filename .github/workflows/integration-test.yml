@@ -31,8 +31,8 @@ jobs:
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       with:
-        deployment-url: "https://next-js-boilerplate-from-beta.vercel.app"
-        timeout: 600 # Wait for 10 seconds before failing
+        deployment-url: "https://preview-from-integration-poc.vercel.app"
+        timeout: 300 # Wait for 10 seconds before failing
 
     - name: Displays the deployment name (example on how to read information about the deployment)
       run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"    
