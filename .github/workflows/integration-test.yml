@@ -13,6 +13,6 @@ on:
       run: echo "${{github.event.deployment_status}}""
       run: npm ci
     - name: Run tests
-        run: npm run cypress
-          env:
-              BASE_URL: ${{ github.event.deployment_status.target_url }}
+      run: npm run cypress
+        env:
+          BASE_URL: ${{ github.event.deployment_status.target_url }}
