@@ -3,10 +3,12 @@
 
 name: Cypress Test Integration Branch
 
-on: [deployment_status]
+on:
+  push:
+    branches: [ "integration_poc" ]
 
 jobs:
-  build:
+  wait-for-vercel-deployment:
 
     runs-on: ubuntu-latest
     if: ${{ github.event.deployment_status.state == 'success' }}
@@ -23,10 +25,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Run Cypress tests
-      uses: cypress-io/github-action@v5
-      with:
-        spec: cypress/e2e/**/*.cy.ts
-        browser: chrome
-      env:
-        CYPRESS_BASE_URL: 'https://preview-from-integration-poc.vercel.app'
+    steps:
+      - name: Retrieve deployment URL (example on how to set an ENV var)
+
+      - uses: UnlyEd/github-action-await-vercel@v1.2.39
+        id: await-vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        with:
+          deployment-url: "https://preview-from-integration-poc.vercel.app"
+          timeout: 10 # Wait for 10 seconds before failing
+
+      - name: Displays the deployment name (example on how to read information about the deployment)
+        run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"    
+    
