@@ -1,4 +1,4 @@
-name: 'Run Cypress tests'
+name: 'Run Cypress test'
 on: [deployment_status]
 jobs:
   e2e:
