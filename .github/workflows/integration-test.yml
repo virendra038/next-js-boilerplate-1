@@ -5,16 +5,4 @@ jobs:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Run Cypress
-        uses: cypress-io/github-action@v5
-        env:
-          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
-          CYPRESS_RETRIES: 1
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          retention-days: 1
-          path: |
-            cypress/videos
+      run: echo "${{github.event.deployment}}"
