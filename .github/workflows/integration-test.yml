@@ -1,41 +1,20 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Cypress Test Integration Branch
-
-on:
-  push:
-    branches: [ "integration_poc" ]
-
+name: 'Run Cypress tests'
+on: [deployment_status]
 jobs:
-  build:
-
+  e2e:
+    if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Waiting for 200 from the Vercel Preview
-      uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-      id: waitFor200
-      with:
-        token: "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"
-        max_timeout: 60
-    # access preview url
-    - run: echo ${{steps.waitFor200.outputs.url}}    
-    - name: Run Cypress tests
-      uses: cypress-io/github-action@v5
-      with:
-        spec: cypress/e2e/**/*.cy.ts
-        browser: chrome
-      env:
-        CYPRESS_BASE_URL: 'https://preview-from-integration-poc.vercel.app'
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Cypress
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          CYPRESS_RETRIES: 1
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          retention-days: 1
+          path: |
+            cypress/videos
