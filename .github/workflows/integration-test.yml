@@ -1,21 +1,17 @@
 # We are using Playwright but you may use your E2E framework of choice
-name: Cypress Test
-on: [deployment_status]
+name: Playwright Tests
+
+on:
+  deployment_status:
     
-jobs:    
-  cypress-run:
+  run-e2es:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run: echo "${{github.event.deployment_status}}"
-      run: npm ci
-    - name: Run Cypress tests
-      uses: cypress-io/github-action@v5
-      with:
-        wait-on: ${{ github.event.deployment_status.target_url }}
-        spec: cypress/e2e/**/*.cy.ts
-        browser: chrome
-      env:
-        CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}  
+      run: npm ci && npx playwright install --with-deps
+    - name: Run tests
+        run: npx playwright test
+          env:
+              BASE_URL: ${{ github.event.deployment_status.target_url }}
