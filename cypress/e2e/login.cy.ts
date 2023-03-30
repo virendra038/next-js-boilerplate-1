@@ -7,7 +7,7 @@ describe('Login page', () => {
       cy.contains('Login1').should('be.visible');
       cy.get('[name="email1"]').should('be.visible');
       cy.get('[name="password1"]').should('be.visible');
-      cy.get('button[type="submit1"]').should('be.visible');
+      cy.get('button[type="submit"]').should('be.visible');
     });
   
     // it('requires email and password to be entered', () => {

@@ -91,7 +91,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                             </FormControl>
                             <Button
                                 borderRadius={0}
-                                type="submit1"
+                                type="submit"
                                 variant="solid"
                                 colorScheme="green"
                                 width="full"
