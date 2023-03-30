@@ -27,8 +27,7 @@ jobs:
         cache: 'npm'
     steps:
       - name: Retrieve deployment URL (example on how to set an ENV var)
-
-      - uses: UnlyEd/github-action-await-vercel@v1.2.39
+        uses: UnlyEd/github-action-await-vercel@v1.2.39
         id: await-vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
