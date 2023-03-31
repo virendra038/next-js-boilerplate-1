@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for deployment
-      - run: echo "deployment"
+        run: echo "deployment"
