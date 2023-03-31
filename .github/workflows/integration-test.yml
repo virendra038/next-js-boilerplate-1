@@ -1,20 +1,10 @@
 name: Wait for Vercel Deployment
 
-on:
-  deployment_status:
-    types: [success]
-    environment:
-      name: preview
-      url: preview-from-integration-poc.vercel.app
+on: [deployment_status]
 
 jobs:
   listen:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for deployment
-        uses: xt0rted/wait-for-vercel-action@v1.0.0
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          deployment-url: ${{ github.event.deployment_status.target_url }}
-          timeout: 120
-      - run: echo "${{ github.event.deployment_status.target_url }}"    
+      - run: echo "deployment"
