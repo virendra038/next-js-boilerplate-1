@@ -3,9 +3,6 @@ name: Wait for Vercel Deployment
 on:
   deployment_status:
     types: [success]
-    # Replace <vercel-deployment-url> with the URL of your Vercel deployment.
-    branches:
-      - integration_poc
     environment:
       name: preview
       url: preview-from-integration-poc.vercel.app
