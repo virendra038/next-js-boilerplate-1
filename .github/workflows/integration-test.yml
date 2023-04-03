@@ -1,11 +1,12 @@
 name: ci
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
-on: [push, deployment, deployment_status]
+on: [deployment_status]
 jobs:
-  show-event:
+  e2e:
+    if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo ${{github.event.deployment_status}}
