@@ -96,7 +96,7 @@ function inputForm({onChangeInput,user,err,onSubmit,login}:any) {
                                 colorScheme="green"
                                 width="full"
                             >
-                               {login ? 'Login2' : 'Continue'}
+                               {login ? 'Login6666' : 'Continue'}
                             </Button>
                             <Text>{err}</Text>
                         </Stack>
