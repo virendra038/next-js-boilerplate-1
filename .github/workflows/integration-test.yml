@@ -1,4 +1,4 @@
-name: CI/CD-1
+name: ci/cd fix -1 
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on: [deployment_status]
 jobs:
@@ -10,3 +10,4 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          echo "Hello"
