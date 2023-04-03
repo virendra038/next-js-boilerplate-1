@@ -9,4 +9,13 @@ jobs:
     steps:
       - name: Get deployment URL
         run: echo "${{ github.event.deployment_status.target_url }}"
-        
+      - name: Checkout  
+      - uses: actions/checkout@v3 
+      - name: Run Cypress
+        uses: cypress-io/github-action@v5
+        with:
+          wait-on: ${{ github.event.deployment_status.target_url }}
+          spec: cypress/e2e/**/*.cy.ts
+          browser: chrome
+        env:
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}  
