@@ -1,10 +1,11 @@
-name: Wait for Vercel Deployment
-
-on: [deployment_status]
-
+name: ci
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+on: [push, deployment, deployment_status]
 jobs:
-  listen:
+  show-event:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for deployment
-        run: echo "deployment"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
