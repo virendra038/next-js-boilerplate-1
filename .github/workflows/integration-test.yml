@@ -7,7 +7,6 @@ jobs:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Get deployment URL
         run: echo "${{ github.event.deployment_status.target_url }}"
+        
