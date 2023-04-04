@@ -1,0 +1,20 @@
+name: Merge to main
+
+on:
+  push:
+    branches: [automerge-poc]
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        ref: beta
+
+    - name: Merge changes
+      run: |
+        git merge --no-ff --no-edit automerge-poc
+        git push origin beta
