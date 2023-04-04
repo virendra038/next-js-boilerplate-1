@@ -1,4 +1,4 @@
-name: ci/cd fix -1 
+name: Cypress test on deployment 
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on: [deployment_status]
 jobs:
