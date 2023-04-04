@@ -2,7 +2,7 @@ name: Merge to main
 
 on:
   push:
-    branches: [automerge-poc]
+    branches: [automerge_poc]
 
 jobs:
   merge:
