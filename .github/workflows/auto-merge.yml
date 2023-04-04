@@ -1,20 +1,17 @@
-name: Merge to main
-
+name: Merge any release branch to uat
 on:
   push:
-    branches: [automerge_poc]
-
+    branches: ["automerge_poc"]
+    
 jobs:
-  merge:
+  merge-branch:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        ref: beta
+      - uses: actions/checkout@master
 
-    - name: Merge changes
-      run: |
-        git merge --no-ff --no-edit automerge_poc
-        git push origin beta
+      - name: Merge staging -> beta
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: beta
+          github_token: ${{ secrets.GITHUB_TOKEN }}
