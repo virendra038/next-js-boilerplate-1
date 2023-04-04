@@ -16,5 +16,5 @@ jobs:
 
     - name: Merge changes
       run: |
-        git merge --no-ff --no-edit automerge-poc
+        git merge --no-ff --no-edit automerge_poc
         git push origin beta
