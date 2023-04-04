@@ -1,8 +1,9 @@
 name: Sync multiple branches
+
 on:
   push:
-    branches:
-      - ["automerge_poc"]
+    branches: ["automerge_poc"]
+
 jobs:
   sync-branch:
     runs-on: ubuntu-latest
